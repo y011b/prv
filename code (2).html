@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AetherLink - Secure P2P Comms</title>
+    
+    <!-- Include PeerJS Library from CDN -->
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+
+    <!-- Enhanced Professional CSS -->
+    <style>
+        /* --- [ ROOT & THEME DEFINITION ] --- */
+        :root {
+            /* Color Palette */
+            --bg-primary: #121317;       /* Deep space, main background */
+            --bg-secondary: #1C1D22;    /* Slightly lighter, for containers */
+            --bg-tertiary: #2A2C33;     /* Lighter still, for interactive elements */
+            --bg-inset: #0D0E10;         /* Darker, for inputs */
+
+            --text-primary: #EAEBF0;    /* Main text, very light gray */
+            --text-secondary: #8D93A2;  /* Subdued text, for labels/placeholders */
+            
+            --border-color: #31343D;
+            --border-hover: #4A4D57;
+
+            --accent-blue: #007BFF;
+            --accent-blue-deep: #0056b3;
+            --accent-glow: rgba(0, 123, 255, 0.3);
+
+            --status-connected: #28a745;
+            --status-error: #dc3545;
+            --status-connecting: #ffc107;
+
+            /* Typography & Sizing */
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+            --font-monospace: "SF Mono", "Menlo", "Consolas", "Liberation Mono", "Courier New", monospace;
+            --border-radius-xl: 20px;
+            --border-radius-l: 12px;
+            --border-radius-m: 8px;
+
+            /* Shadows & Transitions */
+            --shadow-main: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            --shadow-inset: inset 0 2px 4px rgba(0,0,0,0.2);
+            --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* --- [ GLOBAL & BROWSER STYLES ] --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-primary);
+            background-image: radial-gradient(ellipse at center, var(--bg-secondary) 0%, var(--bg-primary) 70%);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--bg-tertiary); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
+
+        /* --- [ MAIN APP LAYOUT ] --- */
+        #app-container {
+            width: 95%;
+            max-width: 1000px;
+            height: 90vh;
+            max-height: 800px;
+            background-color: var(--bg-secondary);
+            border-radius: var(--border-radius-xl);
+            box-shadow: var(--shadow-main);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: var(--transition-smooth);
+        }
+
+        /* --- [ HEADER ] --- */
+        #chat-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+            background-color: rgba(28, 29, 34, 0.7);
+            backdrop-filter: blur(8px);
+        }
+        
+        #chat-header h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; }
+        
+        #settings-btn {
+            background: none; border: none; cursor: pointer; padding: 8px;
+            border-radius: 50%; transition: var(--transition-smooth);
+            display: flex; align-items: center; justify-content: center;
+        }
+        #settings-btn:hover { background-color: var(--bg-tertiary); transform: rotate(45deg); }
+        #settings-btn svg { stroke: var(--text-secondary); transition: stroke 0.2s ease-in-out; }
+        #settings-btn:hover svg { stroke: var(--text-primary); }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        #chat-messages { flex-grow: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+        .message { padding: 12px 18px; border-radius: var(--border-radius-xl); max-width: 75%; line-height: 1.6; word-wrap: break-word; animation: fadeIn 0.4s ease-out; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .message.mine { background: linear-gradient(135deg, var(--accent-blue), var(--accent-blue-deep)); color: white; align-self: flex-end; border-bottom-right-radius: 6px; }
+        .message.theirs { background-color: var(--bg-tertiary); color: var(--text-primary); align-self: flex-start; border-bottom-left-radius: 6px; }
+        .message.system { background-color: transparent; color: var(--text-secondary); font-style: italic; font-size: 14px; align-self: center; text-align: center; box-shadow: none; padding: 8px 0; }
+        .message a { color: #80dfff; text-decoration: underline; text-decoration-thickness: 1px; }
+        .message.theirs a { color: var(--accent-blue); }
+
+        #chat-input-area { padding: 16px 24px; border-top: 1px solid var(--border-color); display: flex; gap: 12px; background-color: var(--bg-secondary); flex-shrink: 0; }
+        .input-wrapper { flex-grow: 1; position: relative; }
+        
+        #chat-input {
+            width: 100%; height: 48px; padding: 0 88px 0 20px; background-color: var(--bg-inset);
+            border: 1px solid var(--border-color); border-radius: var(--border-radius-l); color: var(--text-primary);
+            font-size: 16px; box-shadow: var(--shadow-inset); transition: var(--transition-smooth);
+        }
+        #chat-input::placeholder { color: var(--text-secondary); }
+        #chat-input:focus { outline: none; border-color: var(--accent-blue); box-shadow: var(--shadow-inset), 0 0 0 3px var(--accent-glow); }
+        #chat-input:disabled { background-color: var(--bg-tertiary); cursor: not-allowed; }
+
+        .chat-btn {
+            background: none; border: none; cursor: pointer; position: absolute;
+            top: 50%; transform: translateY(-50%); padding: 8px; border-radius: 50%;
+            transition: var(--transition-smooth); display: flex;
+        }
+        .chat-btn:hover { background-color: var(--bg-tertiary); }
+        .chat-btn:active { transform: translateY(-50%) scale(0.9); }
+        .chat-btn svg { stroke: var(--text-secondary); transition: stroke 0.2s ease-in-out; }
+        .chat-btn:hover svg { stroke: var(--text-primary); }
+        #file-btn { right: 54px; }
+        #send-btn { right: 12px; }
+        #send-btn svg { stroke: var(--accent-blue); }
+        #file-input { display: none; }
+        .chat-btn:disabled { opacity: 0.5; cursor: not-allowed; background-color: transparent !important; }
+        .chat-btn:disabled svg { stroke: var(--text-secondary); }
+
+        /* --- [ SETTINGS MODAL ] --- */
+        #settings-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); display: none;
+            justify-content: center; align-items: center; backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+        .modal-content {
+            background-color: var(--bg-secondary); padding: 32px; border-radius: var(--border-radius-xl);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5); width: 90%; max-width: 420px;
+            border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 24px;
+        }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1px solid var(--border-color); }
+        .modal-header h2 { font-size: 24px; font-weight: 600; }
+        #close-modal-btn { background: none; border: none; font-size: 32px; color: var(--text-secondary); cursor: pointer; line-height: 1; }
+        .modal-section label { display: block; margin-bottom: 12px; font-size: 14px; font-weight: 500; color: var(--text-secondary); }
+        .id-display { display: flex; align-items: center; gap: 10px; background-color: var(--bg-primary); padding: 12px 16px; border-radius: var(--border-radius-m); font-family: var(--font-monospace); font-size: 15px; color: var(--text-primary); border: 1px solid var(--border-color); }
+        .id-text { flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        #copy-id-btn { background-color: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border-color); padding: 8px 14px; border-radius: var(--border-radius-m); cursor: pointer; }
+        #peer-id-input { width: 100%; padding: 14px; background-color: var(--bg-inset); border: 1px solid var(--border-color); border-radius: var(--border-radius-m); color: var(--text-primary); font-size: 15px; font-family: var(--font-monospace); }
+        .modal-button { width: 100%; padding: 14px; border: none; border-radius: var(--border-radius-m); background: var(--accent-blue); color: white; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 12px; }
+        
+        #connection-status { padding: 12px 16px; border-radius: var(--border-radius-m); background-color: var(--bg-primary); border: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px; font-weight: 500; color: var(--text-secondary); }
+        #connection-status::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background-color: currentColor; display: inline-block; }
+        #connection-status.connected { color: var(--status-connected); }
+        #connection-status.error { color: var(--status-error); }
+        #connection-status.connecting { color: var(--status-connecting); }
+
+        /* --- [RESPONSIVE DESIGN FOR MOBILE] --- */
+        @media (max-width: 768px) {
+            #app-container {
+                width: 100%;
+                height: 100vh; /* Use vh for full viewport height */
+                max-width: 100%;
+                max-height: 100%;
+                border-radius: 0;
+                border: none;
+            }
+            #chat-header {
+                padding: 12px 16px;
+            }
+             #chat-header h1 {
+                font-size: 20px;
+            }
+            #chat-messages {
+                padding: 16px;
+                gap: 10px;
+            }
+            #chat-input-area {
+                padding: 12px 16px;
+            }
+            .modal-content {
+                width: 95%;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+        <header id="chat-header">
+            <h1>AetherLink</h1>
+            <button id="settings-btn" title="Settings & Connection">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            </button>
+        </header>
+        <div id="chat-messages">
+            <div class="message system">Welcome to AetherLink. Click the settings icon to connect.</div>
+        </div>
+        <div id="chat-input-area">
+            <div class="input-wrapper">
+                <input type="text" id="chat-input" placeholder="Enter a message..." disabled>
+                <input type="file" id="file-input">
+                <button id="file-btn" class="chat-btn" title="Send File" disabled>
+                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
+                </button>
+                <button id="send-btn" class="chat-btn" title="Send Message" disabled>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SETTINGS MODAL -->
+    <div id="settings-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Settings & Connection</h2>
+                <button id="close-modal-btn">&times;</button>
+            </div>
+            
+            <div class="modal-section">
+                <label>Your Secure ID</label>
+                <div class="id-display">
+                    <span id="my-id-text">Initializing...</span>
+                    <button id="copy-id-btn">Copy</button>
+                </div>
+            </div>
+
+            <div class="modal-section">
+                <label for="peer-id-input">Connect to Peer ID</label>
+                <input type="text" id="peer-id-input" placeholder="Paste peer's ID here">
+                <button id="connect-btn" class="modal-button">Connect</button>
+            </div>
+            
+             <div class="modal-section">
+                <label>Connection Status</label>
+                <div id="connection-status">Disconnected</div>
+            </div>
+
+        </div>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    // --- DOM Elements ---
+    const settingsBtn = document.getElementById('settings-btn');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const settingsModal = document.getElementById('settings-modal');
+    const copyIdBtn = document.getElementById('copy-id-btn');
+    const connectBtn = document.getElementById('connect-btn');
+    const sendBtn = document.getElementById('send-btn');
+    const fileBtn = document.getElementById('file-btn');
+    const fileInput = document.getElementById('file-input');
+    
+    const myIdText = document.getElementById('my-id-text');
+    const peerIdInput = document.getElementById('peer-id-input');
+    const connectionStatus = document.getElementById('connection-status');
+    const chatMessages = document.getElementById('chat-messages');
+    const chatInput = document.getElementById('chat-input');
+
+    // --- State & Config ---
+    let peer;
+    let dataConnection;
+
+    // --- UI Utils ---
+    const displayMessage = (content, type = 'theirs') => {
+        const el = document.createElement('div');
+        el.classList.add('message', type);
+        
+        // If content is an element (like a link), append it. Otherwise, set text.
+        if (content instanceof HTMLElement) {
+            el.appendChild(content);
+        } else {
+            el.textContent = content;
+        }
+        
+        chatMessages.appendChild(el);
+        // Scroll to the latest message
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    };
+    
+    const displaySystemMessage = (text) => displayMessage(text, 'system');
+    
+    const setUIConnected = (isConnected, peerId = '') => {
+        chatInput.disabled = !isConnected;
+        sendBtn.disabled = !isConnected;
+        fileBtn.disabled = !isConnected;
+
+        if(isConnected) {
+            connectionStatus.textContent = `Connected to ${peerId.slice(0, 8)}...`;
+            connectionStatus.className = 'connected';
+        } else {
+            connectionStatus.textContent = 'Disconnected';
+            connectionStatus.className = 'error';
+        }
+    };
+    
+    // --- PeerJS & Connection Logic ---
+    const initializePeer = () => {
+        peer = new Peer(); // Creates a Peer object with an ID from the PeerJS server
+
+        peer.on('open', (id) => {
+            myIdText.textContent = id;
+            displaySystemMessage(`Your secure ID is ready. Share it with a friend to connect.`);
+        });
+
+        peer.on('connection', (conn) => {
+            displaySystemMessage(`Incoming connection...`);
+            setupConnection(conn);
+        });
+        
+        peer.on('error', (err) => {
+            console.error('PeerJS error:', err);
+            displaySystemMessage(`Error: ${err.message}. Please refresh.`);
+            connectionStatus.textContent = `Error: ${err.type}`;
+            connectionStatus.className = 'error';
+        });
+    };
+
+    const setupConnection = (conn) => {
+        dataConnection = conn;
+        
+        dataConnection.on('open', () => {
+            displaySystemMessage(`Connection established with ${conn.peer}.`);
+            setUIConnected(true, conn.peer);
+            settingsModal.style.display = 'none'; // Auto-close modal on success
+        });
+
+        dataConnection.on('data', (data) => {
+            if (data.type === 'text') {
+                displayMessage(data.payload, 'theirs');
+            } else if (data.type === 'file') {
+                // Received a file. Create a download link for it.
+                const blob = new Blob([data.payload.file], { type: data.payload.type });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = data.payload.name;
+                link.textContent = `Download ${data.payload.name}`;
+                displayMessage(link, 'theirs');
+            }
+        });
+        
+        dataConnection.on('close', () => {
+            displaySystemMessage('Peer has disconnected.');
+            setUIConnected(false);
+            dataConnection = null;
+        });
+    };
+    
+    const sendMessage = () => {
+        const message = chatInput.value;
+        if (message && dataConnection) {
+            dataConnection.send({ type: 'text', payload: message });
+            displayMessage(message, 'mine');
+            chatInput.value = '';
+        }
+    };
+
+    const sendFile = (file) => {
+        if (!file || !dataConnection) return;
+        
+        displayMessage(`Sending file: ${file.name}`, 'mine');
+        
+        // FileReader to read file as ArrayBuffer
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const fileData = {
+                name: file.name,
+                type: file.type,
+                file: event.target.result // This is the ArrayBuffer
+            };
+            dataConnection.send({ type: 'file', payload: fileData });
+        };
+        reader.readAsArrayBuffer(file);
+    };
+
+    // --- Event Listeners ---
+    settingsBtn.addEventListener('click', () => { settingsModal.style.display = 'flex'; });
+    closeModalBtn.addEventListener('click', () => { settingsModal.style.display = 'none'; });
+    
+    copyIdBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(myIdText.textContent).then(() => {
+            copyIdBtn.textContent = 'Copied!';
+            setTimeout(() => { copyIdBtn.textContent = 'Copy'; }, 2000);
+        });
+    });
+    
+    connectBtn.addEventListener('click', () => {
+        const peerId = peerIdInput.value.trim();
+        if (peerId && peer && peerId !== peer.id) {
+            displaySystemMessage(`Attempting to connect to ${peerId}...`);
+            connectionStatus.textContent = `Connecting...`;
+            connectionStatus.className = 'connecting';
+            const conn = peer.connect(peerId, { reliable: true });
+            setupConnection(conn);
+        } else if (!peerId) {
+            alert("Please enter a Peer ID to connect.");
+        } else {
+            alert("You cannot connect to yourself.");
+        }
+    });
+    
+    sendBtn.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+    
+    fileBtn.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            sendFile(file);
+        }
+    });
+
+    // --- Initialize App ---
+    initializePeer();
+    setUIConnected(false);
+});
+</script>
+
+</body>
+</html>
