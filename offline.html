@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AetherLink - Offline</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Helios Light Theme */
+            --bg-page: #F4F6F8;
+            --bg-button-secondary: #E9EDF0;
+            --text-primary: #111827;
+            --text-secondary: #6B7280;
+            --accent-color: #F97316;
+            --accent-color-darker: #EA580C;
+            --radius-m: 12px;
+            --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100vh;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 360px; /* Force a phone-like width */
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .action-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-grow: 1;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius-m);
+            cursor: pointer;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.2s;
+        }
+
+        .action-button.primary {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        .action-button.primary:hover {
+            background-color: var(--accent-color-darker);
+            transform: translateY(-2px);
+        }
+
+        .action-button.secondary {
+            background-color: var(--bg-button-secondary);
+            color: var(--text-secondary);
+        }
+        .action-button.secondary:hover {
+            background-color: #DFE3E6;
+            transform: translateY(-2px);
+        }
+        
+        .action-button svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+        }
+
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <h1>Connection Offline</h1>
+        <p>
+            Please check your internet settings and try again to reconnect to the network.
+        </p>
+
+        <div class="button-group">
+            <button id="exit-btn" class="action-button secondary">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+                Exit
+            </button>
+            <button id="retry-btn" class="action-button primary">
+                Retry
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const retryButton = document.getElementById('retry-btn');
+            const exitButton = document.getElementById('exit-btn');
+
+            retryButton.addEventListener('click', () => {
+                // Force a reload from the server, bypassing the cache
+                location.reload(true);
+            });
+
+            exitButton.addEventListener('click', () => {
+                // Tries to go to the previous page in history.
+                // If there's no history, this will do nothing, which is safe.
+                window.history.back();
+            });
+        });
+    </script>
+
+</body>
+</html>
