@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AetherLink: Purity Edition</title>
+    <title>AetherLink: Enhanced Edition</title>
     
     <!-- CDNs & Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,18 +11,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 24 24%22 stroke-width=%221.5%22 stroke=%22currentColor%22><path stroke-linecap=%22round%22 stroke-linejoin=%22round%22 d=%22M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.553L16.5 21.75l-.398-1.197a3.375 3.375 0 00-2.455-2.456L12.75 18l1.197-.398a3.375 3.375 0 002.455-2.456L16.5 14.25l.398 1.197a3.375 3.375 0 002.456 2.456L20.25 18l-1.197.398a3.375 3.375 0 00-2.455 2.456z%22 /></svg>">
-  <style>
-    /* [RE-STYLED] Part II: Visual Design & UI ("Nocturne Theme") */
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+    /* Color Palettes */
     :root {
-        /* Colors - Dark Mode Palette */
-        --bg-primary: #111827;      /* Very Dark Blue-Gray */
-        --bg-secondary: #1F2937;    /* Dark Blue-Gray */
-        --bg-tertiary: #374151;     /* Medium Gray */
-        --bg-input: #374151;        /* Medium Gray */
-        --text-primary: #F9FAFB;    /* Near White */
-        --text-secondary: #D1D5DB;  /* Light Gray */
-        --text-tertiary: #9CA3AF;   /* Muted Gray */
+        /* Default Dark Mode Palette */
+        --bg-primary: #111827;
+        --bg-secondary: #1F2937;
+        --bg-tertiary: #374151;
+        --bg-input: #374151;
+        --text-primary: #F9FAFB;
+        --text-secondary: #D1D5DB;
+        --text-tertiary: #9CA3AF;
         --accent-purple: #8B5CF6;
         --accent-purple-darker: #7C3AED;
         --border-color: #374151;
@@ -30,17 +31,53 @@
         --system-message-text: #93C5FD;
         --success-green: #4ADE80;
         --error-red: #F87171;
+        --warning-yellow: #FBBF24;
+        --call-active: #3B82F6;
+    }
 
-        /* Typography & Layout */
+    /* Ocean Blue Palette */
+    [data-theme="ocean-blue"] {
+        --bg-primary: #0c1445;
+        --bg-secondary: #162b6f;
+        --bg-tertiary: #1d3a8a;
+        --accent-purple: #3B82F6;
+        --accent-purple-darker: #2563EB;
+    }
+
+    /* Forest Green Palette */
+    [data-theme="forest-green"] {
+        --bg-primary: #0d2c1a;
+        --bg-secondary: #1a472a;
+        --bg-tertiary: #2e8b57;
+        --accent-purple: #10B981;
+        --accent-purple-darker: #059669;
+    }
+
+    /* Sunset Orange Palette */
+    [data-theme="sunset-orange"] {
+        --bg-primary: #451a03;
+        --bg-secondary: #7c2d12;
+        --bg-tertiary: #ea580c;
+        --accent-purple: #F97316;
+        --accent-purple-darker: #EA580C;
+    }
+
+    /* Royal Purple Palette */
+    [data-theme="royal-purple"] {
+        --bg-primary: #1e0d33;
+        --bg-secondary: #3e206d;
+        --bg-tertiary: #6D28D9;
+        --accent-purple: #8B5CF6;
+        --accent-purple-darker: #7C3AED;
+    }
+
+    /* Typography & Layout */
+    :root {
         --font-family: 'Inter', sans-serif;
         --sidebar-width: 280px;
-
-        /* Radii */
         --radius-lg: 16px;
         --radius-md: 12px;
         --radius-sm: 8px;
-
-        /* Shadows */
         --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
         --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
         --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.4);
@@ -60,6 +97,7 @@
         font-family: var(--font-family);
         color: var(--text-secondary);
         font-size: 16px;
+        transition: background-color 0.3s ease;
     }
 
     /* --- Main App Layout --- */
@@ -95,26 +133,54 @@
         justify-content: space-between;
         border-bottom: 1px solid var(--border-color);
     }
-    /* New: Container for sidebar header actions */
+    
     .sidebar-header-actions {
         display: flex;
-        gap: 8px; /* Space between buttons */
+        gap: 8px;
     }
 
-    .logo { display: flex; align-items: center; gap: 10px; }
-    .logo svg { width: 28px; height: 28px; color: var(--accent-purple); }
-    .logo-text { font-size: 1.25rem; font-weight: 700; color: var(--text-primary); }
+    .logo { 
+        display: flex; 
+        align-items: center; 
+        gap: 10px; 
+    }
+    .logo i { 
+        font-size: 1.8rem; 
+        color: var(--accent-purple); 
+    }
+    .logo-text { 
+        font-size: 1.25rem; 
+        font-weight: 700; 
+        color: var(--text-primary); 
+    }
 
-    .add-contact-btn { background: none; border: none; cursor: pointer; padding: 4px; border-radius: var(--radius-sm); transition: background-color 0.2s ease; }
-    .add-contact-btn:hover { background-color: var(--bg-tertiary); }
-    .add-contact-btn svg { width: 24px; height: 24px; color: var(--text-secondary); }
+    .add-contact-btn { 
+        background: none; 
+        border: none; 
+        cursor: pointer; 
+        padding: 6px; 
+        border-radius: var(--radius-sm); 
+        transition: background-color 0.2s ease; 
+        color: var(--text-secondary);
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .add-contact-btn:hover { 
+        background-color: var(--bg-tertiary); 
+    }
 
-    /* New: Style for the sidebar close button (initially hidden on desktop) */
     .sidebar-close-btn {
-        display: none; /* Hidden by default on large screens */
+        display: none;
     }
 
-    .contact-list { list-style: none; flex-grow: 1; overflow-y: auto; padding: 8px; }
+    .contact-list { 
+        list-style: none; 
+        flex-grow: 1; 
+        overflow-y: auto; 
+        padding: 8px; 
+    }
 
     .contact-item {
         display: flex;
@@ -128,215 +194,948 @@
         opacity: 0;
         transform: translateY(10px);
         animation: fadeInSlideUp 0.5s ease forwards;
+        position: relative;
     }
 
-    .contact-item:hover { background-color: var(--bg-tertiary); }
+    .contact-item:hover { 
+        background-color: var(--bg-tertiary); 
+    }
     .contact-item.active {
         background: var(--accent-purple);
         color: white;
         box-shadow: var(--shadow-medium);
     }
-    .contact-item.active .contact-name { color: white; }
-    .contact-item.active .delete-contact-btn svg { color: white; }
+    .contact-item.active .contact-name { 
+        color: white; 
+    }
+    .contact-item.active .delete-contact-btn { 
+        color: white; 
+    }
     
-    .contact-name { font-weight: 500; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .delete-contact-btn { background: none; border: none; cursor: pointer; opacity: 0; transition: opacity 0.2s; padding: 4px; border-radius: 50%; }
-    .contact-item:hover .delete-contact-btn { opacity: 1; }
-    .delete-contact-btn:hover { background-color: rgba(255,255,255,0.1); }
-    .delete-contact-btn svg { width: 18px; height: 18px; color: var(--text-secondary); }
+    .contact-name { 
+        font-weight: 500; 
+        color: var(--text-primary); 
+        white-space: nowrap; 
+        overflow: hidden; 
+        text-overflow: ellipsis; 
+        flex-grow: 1;
+        padding-right: 10px;
+    }
+    
+    .contact-actions {
+        display: flex;
+        gap: 8px;
+    }
+    
+    .contact-action-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        opacity: 0.7;
+        transition: opacity 0.2s;
+        padding: 4px;
+        border-radius: 50%;
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+    }
+    
+    .contact-action-btn:hover {
+        opacity: 1;
+        background-color: rgba(255,255,255,0.1);
+    }
+    
+    .pinned .contact-name::before {
+        content: "\f08d";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+        margin-right: 8px;
+        color: var(--warning-yellow);
+    }
 
-    .sidebar-footer { border-top: 1px solid var(--border-color); }
-    .your-id-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-    .your-id-title { font-size: 0.875rem; font-weight: 600; color: var(--text-primary); }
-    .your-id-actions { display: flex; gap: 8px; }
-    .id-action-btn { background: none; border: none; cursor: pointer; padding: 4px; border-radius: var(--radius-sm); transition: background-color 0.2s ease; }
-    .id-action-btn:hover { background-color: var(--bg-tertiary); }
-    .id-action-btn svg { width: 20px; height: 20px; color: var(--text-secondary); }
-    .your-id-display { background-color: var(--bg-input); padding: 8px 12px; border-radius: var(--radius-md); font-family: monospace; font-size: 0.8rem; color: var(--text-tertiary); word-break: break-all; text-align: center; }
+    .sidebar-footer { 
+        border-top: 1px solid var(--border-color); 
+    }
+    .your-id-header { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        margin-bottom: 8px; 
+    }
+    .your-id-title { 
+        font-size: 0.875rem; 
+        font-weight: 600; 
+        color: var(--text-primary); 
+    }
+    .your-id-actions { 
+        display: flex; 
+        gap: 8px; 
+    }
+    .id-action-btn { 
+        background: none; 
+        border: none; 
+        cursor: pointer; 
+        padding: 4px; 
+        border-radius: var(--radius-sm); 
+        transition: background-color 0.2s ease; 
+        color: var(--text-secondary);
+    }
+    .id-action-btn:hover { 
+        background-color: var(--bg-tertiary); 
+    }
+    .your-id-display { 
+        background-color: var(--bg-input); 
+        padding: 8px 12px; 
+        border-radius: var(--radius-md); 
+        font-family: monospace; 
+        font-size: 0.8rem; 
+        color: var(--text-tertiary); 
+        word-break: break-all; 
+        text-align: center; 
+    }
 
     /* --- Chat Area --- */
-    .chat-area { flex-grow: 1; display: flex; flex-direction: column; background-color: var(--bg-secondary); height: 100vh; }
-    .chat-header { display: flex; align-items: center; padding: 16px 24px; border-bottom: 1px solid var(--border-color); flex-shrink: 0; gap: 12px; }
-    .hamburger-menu { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
-    .hamburger-menu svg { width: 28px; height: 28px; color: var(--text-secondary); }
-    .chat-contact-info { flex-grow: 1; }
-    .chat-contact-name { font-size: 1.125rem; font-weight: 600; color: var(--text-primary); }
-    .chat-contact-status { font-size: 0.875rem; color: var(--text-tertiary); }
-    .chat-contact-status.connected { color: var(--success-green); }
-    .chat-contact-status.disconnected { color: var(--error-red); }
-    .chat-actions { display: flex; align-items: center; gap: 12px; }
-    .chat-action-btn { background: none; border: none; cursor: pointer; padding: 6px; border-radius: var(--radius-sm); transition: all 0.2s ease; }
-    .chat-action-btn svg { width: 24px; height: 24px; color: var(--text-secondary); }
-    .chat-action-btn:hover:not(:disabled) { background-color: var(--bg-tertiary); }
-    .chat-action-btn:disabled { cursor: not-allowed; opacity: 0.4; }
-
-    .ghost-mode-toggle { display: flex; align-items: center; gap: 8px; font-size: 0.875rem; padding: 6px 10px; border-radius: var(--radius-md); }
-    .ghost-mode-toggle.active { background-color: var(--accent-purple); color: white; }
-    .ghost-mode-toggle.active svg { color: white; }
-
-    .message-list { flex-grow: 1; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 16px; }
-    .empty-chat { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; color: var(--text-tertiary); }
-    .empty-chat-logo { margin-bottom: 16px; }
-    .empty-chat-logo svg { width: 64px; height: 64px; color: var(--bg-primary); }
-    .empty-chat h2 { font-size: 1.5rem; color: var(--text-primary); margin-bottom: 8px; }
-
-    .message-item { display: flex; max-width: 75%; opacity: 0; transform: translateY(10px); animation: fadeInSlideUp 0.5s ease forwards; transition: opacity 0.5s ease, transform 0.5s ease; }
-    .message-item.disappearing { opacity: 0; transform: scale(0.8); }
-    .message-item.mine { align-self: flex-end; }
-    .message-item.theirs { align-self: flex-start; }
-    .message-item.system { align-self: center; max-width: 100%; }
-
-    .message-bubble { padding: 12px 16px; border-radius: var(--radius-lg); position: relative; box-shadow: var(--shadow-soft); }
-    .message-bubble.mine { background-image: linear-gradient(to right, var(--accent-purple), var(--accent-purple-darker)); color: white; border-bottom-right-radius: var(--radius-sm); }
-    .message-bubble.theirs { background-color: var(--bg-tertiary); color: var(--text-primary); border-bottom-left-radius: var(--radius-sm); }
-    .message-bubble.system { background-color: var(--system-message-bg); color: var(--system-message-text); font-size: 0.875rem; text-align: center; }
-    .message-content img { max-width: 100%; border-radius: var(--radius-md); margin-top: 8px; cursor: pointer; }
-    .message-content a { display: block; margin-top: 8px; padding: 8px; background-color: rgba(255,255,255,0.05); border-radius: var(--radius-sm); color: inherit; text-decoration: none; font-weight: 500; }
+    .chat-area { 
+        flex-grow: 1; 
+        display: flex; 
+        flex-direction: column; 
+        background-color: var(--bg-secondary); 
+        height: 100vh; 
+    }
+    .chat-header { 
+        display: flex; 
+        align-items: center; 
+        padding: 16px 24px; 
+        border-bottom: 1px solid var(--border-color); 
+        flex-shrink: 0; 
+        gap: 12px; 
+    }
+    .hamburger-menu { 
+        display: none; 
+        background: none; 
+        border: none; 
+        cursor: pointer; 
+        padding: 4px; 
+        color: var(--text-secondary);
+        font-size: 1.4rem;
+    }
+    .chat-contact-info { 
+        flex-grow: 1; 
+    }
+    .chat-contact-name { 
+        font-size: 1.125rem; 
+        font-weight: 600; 
+        color: var(--text-primary); 
+    }
+    .chat-contact-status { 
+        font-size: 0.875rem; 
+        color: var(--text-tertiary); 
+    }
+    .chat-contact-status.connected { 
+        color: var(--success-green); 
+    }
+    .chat-contact-status.disconnected { 
+        color: var(--error-red); 
+    }
+    .chat-actions { 
+        display: flex; 
+        align-items: center; 
+        gap: 12px; 
+    }
+    .chat-action-btn { 
+        background: none; 
+        border: none; 
+        cursor: pointer; 
+        padding: 8px; 
+        border-radius: var(--radius-sm); 
+        transition: all 0.2s ease; 
+        color: var(--text-secondary);
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .chat-action-btn:hover:not(:disabled) { 
+        background-color: var(--bg-tertiary); 
+    }
+    .chat-action-btn:disabled { 
+        cursor: not-allowed; 
+        opacity: 0.4; 
+    }
     
-    .translation-container { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); font-style: italic; opacity: 0.8; }
-    .message-bubble.theirs .translation-container { border-top-color: rgba(255,255,255,0.1); }
+    .chat-action-btn.active {
+        background-color: var(--accent-purple);
+        color: white;
+    }
+
+    .ghost-mode-toggle { 
+        display: flex; 
+        align-items: center; 
+        gap: 8px; 
+        font-size: 0.875rem; 
+        padding: 6px 10px; 
+        border-radius: var(--radius-md); 
+    }
+    .ghost-mode-toggle.active { 
+        background-color: var(--accent-purple); 
+        color: white; 
+    }
+
+    .message-list { 
+        flex-grow: 1; 
+        overflow-y: auto; 
+        padding: 24px; 
+        display: flex; 
+        flex-direction: column; 
+        gap: 16px; 
+    }
+    .empty-chat { 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        justify-content: center; 
+        height: 100%; 
+        text-align: center; 
+        color: var(--text-tertiary); 
+    }
+    .empty-chat-logo { 
+        margin-bottom: 16px; 
+    }
+    .empty-chat-logo i { 
+        font-size: 4rem; 
+        color: var(--bg-primary); 
+    }
+    .empty-chat h2 { 
+        font-size: 1.5rem; 
+        color: var(--text-primary); 
+        margin-bottom: 8px; 
+    }
+
+    .message-item { 
+        display: flex; 
+        max-width: 75%; 
+        opacity: 0; 
+        transform: translateY(10px); 
+        animation: fadeInSlideUp 0.5s ease forwards; 
+        transition: opacity 0.5s ease, transform 0.5s ease; 
+    }
+    .message-item.disappearing { 
+        opacity: 0; 
+        transform: scale(0.8); 
+    }
+    .message-item.mine { 
+        align-self: flex-end; 
+    }
+    .message-item.theirs { 
+        align-self: flex-start; 
+    }
+    .message-item.system { 
+        align-self: center; 
+        max-width: 100%; 
+    }
+
+    .message-bubble { 
+        padding: 12px 16px; 
+        border-radius: var(--radius-lg); 
+        position: relative; 
+        box-shadow: var(--shadow-soft); 
+    }
+    .message-bubble.mine { 
+        background-image: linear-gradient(to right, var(--accent-purple), var(--accent-purple-darker)); 
+        color: white; 
+        border-bottom-right-radius: var(--radius-sm); 
+    }
+    .message-bubble.theirs { 
+        background-color: var(--bg-tertiary); 
+        color: var(--text-primary); 
+        border-bottom-left-radius: var(--radius-sm); 
+    }
+    .message-bubble.system { 
+        background-color: var(--system-message-bg); 
+        color: var(--system-message-text); 
+        font-size: 0.875rem; 
+        text-align: center; 
+    }
+    .message-content img { 
+        max-width: 100%; 
+        border-radius: var(--radius-md); 
+        margin-top: 8px; 
+        cursor: pointer; 
+    }
+    .message-content a { 
+        display: block; 
+        margin-top: 8px; 
+        padding: 8px; 
+        background-color: rgba(255,255,255,0.05); 
+        border-radius: var(--radius-sm); 
+        color: inherit; 
+        text-decoration: none; 
+        font-weight: 500; 
+    }
     
-    .message-meta { display: flex; align-items: center; justify-content: flex-end; margin-top: 8px; gap: 8px; }
-    .translate-btn { background: none; border: none; cursor: pointer; padding: 2px; }
-    .translate-btn svg { width: 16px; height: 16px; color: var(--text-tertiary); }
-    .translate-btn:disabled svg { opacity: 0.3; cursor: not-allowed; }
-    .message-bubble.mine .translate-btn svg { color: rgba(255,255,255,0.7); }
+    .translation-container { 
+        margin-top: 10px; 
+        padding-top: 10px; 
+        border-top: 1px solid rgba(255,255,255,0.1); 
+        font-style: italic; 
+        opacity: 0.8; 
+    }
+    .message-bubble.theirs .translation-container { 
+        border-top-color: rgba(255,255,255,0.1); 
+    }
+    
+    .message-meta { 
+        display: flex; 
+        align-items: center; 
+        justify-content: flex-end; 
+        margin-top: 8px; 
+        gap: 8px; 
+    }
+    .translate-btn { 
+        background: none; 
+        border: none; 
+        cursor: pointer; 
+        padding: 2px; 
+        color: var(--text-tertiary);
+    }
+    .translate-btn:disabled { 
+        opacity: 0.3; 
+        cursor: not-allowed; 
+    }
+    .message-bubble.mine .translate-btn { 
+        color: rgba(255,255,255,0.7); 
+    }
 
-    .message-form { display: flex; padding: 16px 24px; border-top: 1px solid var(--border-color); gap: 12px; align-items: center; }
-    .file-input-label { cursor: pointer; padding: 8px; border-radius: 50%; transition: background-color 0.2s ease; }
-    .file-input-label:hover { background-color: var(--bg-tertiary); }
-    .file-input-label svg { width: 24px; height: 24px; color: var(--text-secondary); }
-    #file-input { display: none; }
+    .message-form { 
+        display: flex; 
+        padding: 16px 24px; 
+        border-top: 1px solid var(--border-color); 
+        gap: 12px; 
+        align-items: center; 
+    }
+    .file-input-label { 
+        cursor: pointer; 
+        padding: 8px; 
+        border-radius: 50%; 
+        transition: background-color 0.2s ease; 
+        color: var(--text-secondary);
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .file-input-label:hover { 
+        background-color: var(--bg-tertiary); 
+    }
+    #file-input { 
+        display: none; 
+    }
 
-    .message-input { flex-grow: 1; border: none; background-color: var(--bg-input); border-radius: var(--radius-md); padding: 12px 16px; font-size: 1rem; color: var(--text-primary); }
-    .message-input::placeholder { color: var(--text-tertiary); }
-    .message-input:focus { outline: 2px solid var(--accent-purple); }
-    .send-btn { background-color: var(--accent-purple); border: none; border-radius: var(--radius-md); padding: 12px; cursor: pointer; transition: background-color 0.2s ease; }
-    .send-btn:hover:not(:disabled) { background-color: var(--accent-purple-darker); }
-    .send-btn svg { color: white; width: 24px; height: 24px; display: block; }
-    .message-form :disabled { cursor: not-allowed; opacity: 0.5; }
+    .message-input { 
+        flex-grow: 1; 
+        border: none; 
+        background-color: var(--bg-input); 
+        border-radius: var(--radius-md); 
+        padding: 12px 16px; 
+        font-size: 1rem; 
+        color: var(--text-primary); 
+    }
+    .message-input::placeholder { 
+        color: var(--text-tertiary); 
+    }
+    .message-input:focus { 
+        outline: 2px solid var(--accent-purple); 
+    }
+    .send-btn { 
+        background-color: var(--accent-purple); 
+        border: none; 
+        border-radius: var(--radius-md); 
+        padding: 12px; 
+        cursor: pointer; 
+        transition: background-color 0.2s ease; 
+        color: white;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .send-btn:hover:not(:disabled) { 
+        background-color: var(--accent-purple-darker); 
+    }
+    .message-form :disabled { 
+        cursor: not-allowed; 
+        opacity: 0.5; 
+    }
 
     /* --- Modals & Overlays --- */
     .modal-backdrop {
-        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        position: fixed; 
+        top: 0; 
+        left: 0; 
+        width: 100vw; 
+        height: 100vh;
         background-color: rgba(17, 24, 39, 0.6);
         backdrop-filter: blur(8px);
-        display: flex; align-items: center; justify-content: center; z-index: 1000;
-        opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        z-index: 1000;
+        opacity: 0; 
+        visibility: hidden; 
+        transition: opacity 0.3s ease, visibility 0.3s ease;
     }
-    .modal-backdrop.visible { opacity: 1; visibility: visible; }
+    .modal-backdrop.visible { 
+        opacity: 1; 
+        visibility: visible; 
+    }
     .modal {
         background-color: var(--bg-secondary);
         border: 1px solid var(--border-color);
         border-radius: var(--radius-lg);
         box-shadow: var(--shadow-lg);
-        width: 90%; max-width: 400px;
-        transform: scale(0.95); transition: transform 0.3s ease; overflow: hidden;
+        width: 90%; 
+        max-width: 400px;
+        transform: scale(0.95); 
+        transition: transform 0.3s ease; 
+        overflow: hidden;
     }
-    .modal-backdrop.visible .modal { transform: scale(1); }
-    .modal-header { padding: 20px 24px; border-bottom: 1px solid var(--border-color); }
-    .modal-title { font-size: 1.25rem; font-weight: 600; color: var(--text-primary); }
-    .modal-body { padding: 24px; }
-    .form-group { margin-bottom: 16px; }
-    .form-group label { display: block; font-weight: 500; margin-bottom: 8px; color: var(--text-primary); }
-    .form-group input { width: 100%; border: 1px solid var(--border-color); background-color: var(--bg-input); border-radius: var(--radius-md); padding: 12px 16px; font-size: 1rem; color: var(--text-primary); }
-    .form-group input:focus { outline: 2px solid var(--accent-purple); border-color: transparent; }
-    .modal-footer { display: flex; justify-content: flex-end; padding: 16px 24px; background-color: var(--bg-primary); }
-    .modal-btn { padding: 10px 20px; border-radius: var(--radius-md); border: none; font-weight: 600; cursor: pointer; transition: background-color 0.2s ease; background-color: var(--bg-tertiary); color: var(--text-primary); }
-    .modal-btn:hover { background-color: #4B5563; }
-    .primary-btn { background-color: var(--accent-purple); color: white; }
-    .primary-btn:hover { background-color: var(--accent-purple-darker); }
+    .modal-backdrop.visible .modal { 
+        transform: scale(1); 
+    }
+    .modal-header { 
+        padding: 20px 24px; 
+        border-bottom: 1px solid var(--border-color); 
+    }
+    .modal-title { 
+        font-size: 1.25rem; 
+        font-weight: 600; 
+        color: var(--text-primary); 
+    }
+    .modal-body { 
+        padding: 24px; 
+    }
+    .form-group { 
+        margin-bottom: 16px; 
+    }
+    .form-group label { 
+        display: block; 
+        font-weight: 500; 
+        margin-bottom: 8px; 
+        color: var(--text-primary); 
+    }
+    .form-group input { 
+        width: 100%; 
+        border: 1px solid var(--border-color); 
+        background-color: var(--bg-input); 
+        border-radius: var(--radius-md); 
+        padding: 12px 16px; 
+        font-size: 1rem; 
+        color: var(--text-primary); 
+    }
+    .form-group input:focus { 
+        outline: 2px solid var(--accent-purple); 
+        border-color: transparent; 
+    }
+    .modal-footer { 
+        display: flex; 
+        justify-content: flex-end; 
+        padding: 16px 24px; 
+        background-color: var(--bg-primary); 
+    }
+    .modal-btn { 
+        padding: 10px 20px; 
+        border-radius: var(--radius-md); 
+        border: none; 
+        font-weight: 600; 
+        cursor: pointer; 
+        transition: background-color 0.2s ease; 
+        background-color: var(--bg-tertiary); 
+        color: var(--text-primary); 
+    }
+    .modal-btn:hover { 
+        background-color: #4B5563; 
+    }
+    .primary-btn { 
+        background-color: var(--accent-purple); 
+        color: white; 
+    }
+    .primary-btn:hover { 
+        background-color: var(--accent-purple-darker); 
+    }
 
-    #qr-code-container { display: flex; justify-content: center; margin-bottom: 20px; padding: 16px; background: white; border-radius: var(--radius-md); }
-    /* Added style for the canvas itself */
-    #qr-code-canvas { display: block; max-width: 100%; height: auto; }
+    #qr-code-container { 
+        display: flex; 
+        justify-content: center; 
+        margin-bottom: 20px; 
+        padding: 16px; 
+        background: white; 
+        border-radius: var(--radius-md); 
+    }
+    #qr-code-canvas { 
+        display: block; 
+        max-width: 100%; 
+        height: auto; 
+    }
 
+    /* Settings Modal */
+    .settings-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-top: 16px;
+    }
+    
+    .setting-card {
+        background-color: var(--bg-tertiary);
+        border-radius: var(--radius-md);
+        padding: 16px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .setting-card:hover {
+        background-color: var(--accent-purple);
+        transform: translateY(-2px);
+    }
+    
+    .setting-card i {
+        font-size: 2rem;
+        margin-bottom: 12px;
+    }
+    
+    .setting-card h4 {
+        font-size: 1rem;
+        margin-bottom: 8px;
+        color: var(--text-primary);
+    }
+    
+    .setting-card p {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+    }
+    
+    .setting-card.active {
+        background-color: var(--accent-purple);
+        border: 2px solid var(--accent-purple-darker);
+    }
+    
+    /* Password Settings */
+    .password-options {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 16px;
+    }
+    
+    .password-option {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        border-radius: var(--radius-md);
+        background-color: var(--bg-tertiary);
+        cursor: pointer;
+    }
+    
+    .password-option.active {
+        background-color: var(--accent-purple);
+    }
+    
+    .password-option i {
+        font-size: 1.2rem;
+    }
+    
+    /* Pattern Grid */
+    .pattern-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin: 20px auto;
+        max-width: 250px;
+    }
+    
+    .pattern-dot {
+        width: 60px;
+        height: 60px;
+        background-color: var(--bg-tertiary);
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .pattern-dot.selected {
+        background-color: var(--accent-purple);
+    }
+    
+    .pattern-dot.selected::after {
+        content: "";
+        width: 20px;
+        height: 20px;
+        background-color: white;
+        border-radius: 50%;
+    }
+    
+    /* PIN Input */
+    .pin-input-container {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin: 20px 0;
+    }
+    
+    .pin-input {
+        width: 50px;
+        height: 50px;
+        text-align: center;
+        font-size: 1.5rem;
+        border: 2px solid var(--border-color);
+        border-radius: var(--radius-sm);
+        background-color: var(--bg-input);
+        color: var(--text-primary);
+    }
+    
+    .pin-input:focus {
+        outline: 2px solid var(--accent-purple);
+        border-color: transparent;
+    }
+    
+    /* Password Input */
+    .password-input-container {
+        position: relative;
+        margin: 20px 0;
+    }
+    
+    .password-input {
+        width: 100%;
+        padding: 12px 40px 12px 16px;
+        border: 2px solid var(--border-color);
+        border-radius: var(--radius-md);
+        background-color: var(--bg-input);
+        color: var(--text-primary);
+        font-size: 1rem;
+    }
+    
+    .toggle-password {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: var(--text-secondary);
+        cursor: pointer;
+    }
+    
+    /* Lock Screen */
+    .lock-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--bg-primary);
+        z-index: 2000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-primary);
+        text-align: center;
+        padding: 20px;
+    }
+    
+    .lock-screen i {
+        font-size: 4rem;
+        color: var(--accent-purple);
+        margin-bottom: 20px;
+    }
+    
+    .lock-screen h2 {
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+    }
+    
+    .lock-screen p {
+        margin-bottom: 30px;
+        color: var(--text-secondary);
+        max-width: 300px;
+    }
+    
+    .unlock-btn {
+        background-color: var(--accent-purple);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: var(--radius-md);
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+    
+    .unlock-btn:hover {
+        background-color: var(--accent-purple-darker);
+    }
 
     /* --- Toast Notifications --- */
-    .toast-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 2000; display: flex; flex-direction: column; gap: 10px; align-items: center; }
-    .toast { background-color: var(--bg-tertiary); color: var(--text-primary); padding: 12px 20px; border-radius: var(--radius-lg); box-shadow: var(--shadow-medium); opacity: 0; transform: translateY(20px); animation: toast-in 0.3s ease forwards; }
-    @keyframes toast-in { to { opacity: 1; transform: translateY(0); } }
-    @keyframes toast-out { to { opacity: 0; transform: translateY(20px); } }
+    .toast-container { 
+        position: fixed; 
+        bottom: 20px; 
+        left: 50%; 
+        transform: translateX(-50%); 
+        z-index: 2000; 
+        display: flex; 
+        flex-direction: column; 
+        gap: 10px; 
+        align-items: center; 
+    }
+    .toast { 
+        background-color: var(--bg-tertiary); 
+        color: var(--text-primary); 
+        padding: 12px 20px; 
+        border-radius: var(--radius-lg); 
+        box-shadow: var(--shadow-medium); 
+        opacity: 0; 
+        transform: translateY(20px); 
+        animation: toast-in 0.3s ease forwards; 
+    }
+    @keyframes toast-in { 
+        to { 
+            opacity: 1; 
+            transform: translateY(0); 
+        } 
+    }
+    @keyframes toast-out { 
+        to { 
+            opacity: 0; 
+            transform: translateY(20px); 
+        } 
+    }
 
     /* --- Call UI --- */
-    .call-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); z-index: 1500; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.3s ease; }
-    .call-overlay.visible { opacity: 1; visibility: visible; }
-    #remote-video { width: 100%; height: 100%; object-fit: contain; }
-    #local-video { position: absolute; bottom: 100px; right: 20px; width: 200px; height: 150px; border-radius: var(--radius-md); border: 2px solid rgba(255,255,255,0.5); box-shadow: var(--shadow-lg); object-fit: cover; }
-    .call-controls { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 16px; background-color: rgba(0,0,0,0.3); backdrop-filter: blur(10px); padding: 12px 24px; border-radius: 50px; }
-    .call-control-btn { background-color: rgba(255,255,255,0.1); border: none; width: 56px; height: 56px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background-color 0.2s ease; }
-    .call-control-btn svg { width: 28px; height: 28px; color: white; }
-    .call-control-btn:hover { background-color: rgba(255,255,255,0.2); }
-    .call-control-btn.hang-up { background-color: #EF4444; }
-    .call-control-btn.hang-up:hover { background-color: #DC2626; }
-    .call-control-btn.off { background-color: #4B5563; }
+    .call-overlay { 
+        position: fixed; 
+        top: 0; 
+        left: 0; 
+        width: 100%; 
+        height: 100%; 
+        background-color: rgba(0,0,0,0.9); 
+        z-index: 1500; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        opacity: 0; 
+        visibility: hidden; 
+        transition: opacity 0.3s ease; 
+    }
+    .call-overlay.visible { 
+        opacity: 1; 
+        visibility: visible; 
+    }
+    #remote-video { 
+        width: 100%; 
+        height: 100%; 
+        object-fit: contain; 
+    }
+    #local-video { 
+        position: absolute; 
+        bottom: 100px; 
+        right: 20px; 
+        width: 200px; 
+        height: 150px; 
+        border-radius: var(--radius-md); 
+        border: 2px solid rgba(255,255,255,0.5); 
+        box-shadow: var(--shadow-lg); 
+        object-fit: cover; 
+    }
+    .call-controls { 
+        position: absolute; 
+        bottom: 20px; 
+        left: 50%; 
+        transform: translateX(-50%); 
+        display: flex; 
+        gap: 16px; 
+        background-color: rgba(0,0,0,0.3); 
+        backdrop-filter: blur(10px); 
+        padding: 12px 24px; 
+        border-radius: 50px; 
+    }
+    .call-control-btn { 
+        background-color: rgba(255,255,255,0.1); 
+        border: none; 
+        width: 56px; 
+        height: 56px; 
+        border-radius: 50%; 
+        cursor: pointer; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        transition: background-color 0.2s ease; 
+        color: white;
+        font-size: 1.5rem;
+    }
+    .call-control-btn:hover { 
+        background-color: rgba(255,255,255,0.2); 
+    }
+    .call-control-btn.hang-up { 
+        background-color: #EF4444; 
+    }
+    .call-control-btn.hang-up:hover { 
+        background-color: #DC2626; 
+    }
+    .call-control-btn.off { 
+        background-color: #4B5563; 
+    }
 
     /* Incoming Call Notification */
     .incoming-call-notification {
-        position: fixed; top: 20px; right: 20px;
+        position: fixed; 
+        top: 20px; 
+        right: 20px;
         background-color: var(--bg-secondary);
         border: 1px solid var(--border-color);
-        padding: 20px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);
-        z-index: 1600; display: flex; flex-direction: column; gap: 12px; align-items: center;
-        transform: translateX(120%); transition: transform 0.4s ease-in-out;
+        padding: 20px; 
+        border-radius: var(--radius-lg); 
+        box-shadow: var(--shadow-lg);
+        z-index: 1600; 
+        display: flex; 
+        flex-direction: column; 
+        gap: 12px; 
+        align-items: center;
+        transform: translateX(120%); 
+        transition: transform 0.4s ease-in-out;
     }
-    .incoming-call-notification.visible { transform: translateX(0); }
-    .incoming-call-actions { display: flex; gap: 12px; }
-    .incoming-call-btn { padding: 10px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-    .incoming-call-btn svg { width: 24px; height: 24px; color: white; }
-    #accept-call-btn { background-color: var(--success-green); }
-    #decline-call-btn { background-color: var(--error-red); }
+    .incoming-call-notification.visible { 
+        transform: translateX(0); 
+    }
+    .incoming-call-actions { 
+        display: flex; 
+        gap: 12px; 
+    }
+    .incoming-call-btn { 
+        padding: 12px; 
+        border-radius: 50%; 
+        border: none; 
+        cursor: pointer; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        font-size: 1.2rem;
+        color: white;
+    }
+    #accept-call-btn { 
+        background-color: var(--success-green); 
+    }
+    #decline-call-btn { 
+        background-color: var(--error-red); 
+    }
 
     /* Animations */
     @keyframes fadeInSlideUp {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+        from { 
+            opacity: 0; 
+            transform: translateY(10px); 
+        }
+        to { 
+            opacity: 1; 
+            transform: translateY(0); 
+        }
     }
     
     /* Responsiveness */
     @media (max-width: 768px) {
-        /* Sidebar is hidden by default on mobile */
         .app-container.sidebar-hidden .sidebar { 
             transform: translateX(-100%); 
         }
-        /* When sidebar is not hidden, make it an overlay */
         .sidebar { 
-            position: fixed; /* Changed to fixed for overlay behavior */
+            position: fixed;
             top: 0;
             left: 0;
-            width: 100%; /* Make sidebar full width on mobile for better overlay */
+            width: 100%;
             height: 100%;
-            z-index: 500; /* Ensure it overlays chat area */
+            z-index: 500;
             box-shadow: var(--shadow-lg);
-            /* Already has transition: transform 0.3s ease-in-out; */
         }
-        /* Show the close button when sidebar is active/open on mobile */
         .app-container:not(.sidebar-hidden) .sidebar-close-btn {
             display: block;
         }
-        /* The main chat hamburger menu should still be block */
-        .hamburger-menu { display: block; }
+        .hamburger-menu { 
+            display: block; 
+        }
+        
+        .settings-grid {
+            grid-template-columns: 1fr;
+        }
     }
 </style>
 </head>
 <body oncontextmenu="return false;">
 
-    <!-- Part III: Application HTML Structure -->
+    <!-- Lock Screen -->
+    <div class="lock-screen" id="lock-screen" style="display: none;">
+        <i class="fas fa-lock"></i>
+        <h2>AetherLocked</h2>
+        <p id="lock-screen-message">Enter your passcode to continue</p>
+        
+        <!-- PIN Input for Lock Screen -->
+        <div class="pin-input-container" id="lock-pin-container" style="display: none;">
+            <input type="password" class="pin-input" maxlength="1" inputmode="numeric" pattern="\d*">
+            <input type="password" class="pin-input" maxlength="1" inputmode="numeric" pattern="\d*">
+            <input type="password" class="pin-input" maxlength="1" inputmode="numeric" pattern="\d*">
+            <input type="password" class="pin-input" maxlength="1" inputmode="numeric" pattern="\d*">
+        </div>
+        
+        <!-- Pattern Grid for Lock Screen -->
+        <div id="lock-pattern-container" class="pattern-grid" style="display: none;">
+            <div class="pattern-dot" data-dot="1"></div>
+            <div class="pattern-dot" data-dot="2"></div>
+            <div class="pattern-dot" data-dot="3"></div>
+            <div class="pattern-dot" data-dot="4"></div>
+            <div class="pattern-dot" data-dot="5"></div>
+            <div class="pattern-dot" data-dot="6"></div>
+            <div class="pattern-dot" data-dot="7"></div>
+            <div class="pattern-dot" data-dot="8"></div>
+            <div class="pattern-dot" data-dot="9"></div>
+        </div>
+        <p id="lock-pattern-instructions" style="display: none; color: var(--text-secondary); margin-top: 20px;">Draw your pattern</p>
+
+        <!-- Password Input for Lock Screen -->
+        <div class="password-input-container" id="lock-password-container" style="display: none;">
+            <input type="password" class="password-input" id="lock-password-input" placeholder="Enter your password">
+            <button class="toggle-password" id="lock-toggle-password">
+                <i class="fas fa-eye"></i>
+            </button>
+        </div>
+        
+        <button class="unlock-btn" id="unlock-btn">Unlock</button>
+    </div>
+
+    <!-- Main App Container -->
     <div id="app-container" class="app-container sidebar-hidden">
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="logo">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.553L16.5 21.75l-.398-1.197a3.375 3.375 0 00-2.455-2.456L12.75 18l1.197-.398a3.375 3.375 0 002.455-2.456L16.5 14.25l.398 1.197a3.375 3.375 0 002.456 2.456L20.25 18l-1.197.398a3.375 3.375 0 00-2.455 2.456z" /></svg>
+                    <i class="fas fa-shield-alt"></i>
                     <span class="logo-text">AetherLink</span>
                 </div>
-                <!-- New actions container for close button and add contact button -->
                 <div class="sidebar-header-actions">
                     <button class="add-contact-btn sidebar-close-btn" id="sidebar-close-btn" title="Close Sidebar">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <button class="add-contact-btn" id="settings-btn" title="Settings">
+                        <i class="fas fa-cog"></i>
                     </button>
                     <button class="add-contact-btn" id="add-contact-btn-main">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <i class="fas fa-user-plus"></i>
                     </button>
                 </div>
             </div>
@@ -346,10 +1145,10 @@
                     <span class="your-id-title">Your ID</span>
                     <div class="your-id-actions">
                         <button class="id-action-btn" id="copy-id-btn" title="Copy ID">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" /></svg>
+                            <i class="far fa-copy"></i>
                         </button>
                         <button class="id-action-btn" id="share-id-btn" title="Share ID">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 100-2.186m0 2.186c-.18.324-.283.696-.283 1.093s.103.77.283 1.093m-7.5-12.28a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093" /></svg>
+                            <i class="fas fa-share-alt"></i>
                         </button>
                     </div>
                 </div>
@@ -360,11 +1159,8 @@
         <!-- Chat Area -->
         <main class="chat-area">
             <div class="chat-header">
-                 <!-- Hamburger menu with YouTube style -->
-                 <button class="hamburger-menu" id="hamburger-menu" aria-label="Guide" aria-pressed="false">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" focusable="false" fill="currentColor">
-                        <path d="M21 6H3V5h18v1zm0 5H3v1h18v-1zm0 6H3v1h18v-1z"></path>
-                    </svg>
+                <button class="hamburger-menu" id="hamburger-menu" aria-label="Guide" aria-pressed="false">
+                    <i class="fas fa-bars"></i>
                 </button>
                 <div class="chat-contact-info">
                     <div class="chat-contact-name" id="chat-contact-name">Select a contact</div>
@@ -372,21 +1168,20 @@
                 </div>
                 <div class="chat-actions">
                     <button class="chat-action-btn ghost-mode-toggle" id="ghost-mode-toggle">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>
-                        Ghost
+                        <i class="fas fa-ghost"></i> Ghost
                     </button>
                     <button class="chat-action-btn" id="voice-call-btn" title="Voice Call" disabled>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 6.75z" /></svg>
+                        <i class="fas fa-phone-alt"></i>
                     </button>
                     <button class="chat-action-btn" id="video-call-btn" title="Video Call" disabled>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9A2.25 2.25 0 004.5 18.75z" /></svg>
+                        <i class="fas fa-video"></i>
                     </button>
                 </div>
             </div>
             <div class="message-list" id="message-list">
                 <div class="empty-chat" id="empty-chat-screen">
                     <div class="empty-chat-logo">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.553L16.5 21.75l-.398-1.197a3.375 3.375 0 00-2.455-2.456L12.75 18l1.197-.398a3.375 3.375 0 002.455-2.456L16.5 14.25l.398 1.197a3.375 3.375 0 002.456 2.456L20.25 18l-1.197.398a3.375 3.375 0 00-2.455 2.456z" /></svg>
+                        <i class="fas fa-shield-alt"></i>
                     </div>
                     <h2>Welcome to AetherLink</h2>
                     <p>Select a contact to start a secure, end-to-end encrypted conversation.</p>
@@ -394,12 +1189,12 @@
             </div>
             <form class="message-form" id="message-form">
                 <label for="file-input" class="file-input-label">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.122 2.122l7.81-7.81" /></svg>
+                    <i class="fas fa-paperclip"></i>
                 </label>
                 <input type="file" id="file-input" disabled>
                 <input type="text" class="message-input" id="message-input" placeholder="Type a message..." autocomplete="off" disabled>
                 <button type="submit" class="send-btn" id="send-btn" disabled>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" /></svg>
+                    <i class="fas fa-paper-plane"></i>
                 </button>
             </form>
         </main>
@@ -433,7 +1228,6 @@
             <div class="modal-header"><h3 class="modal-title">Share Your ID</h3></div>
             <div class="modal-body">
                 <p style="margin-bottom: 16px; color: var(--text-secondary); text-align: center;">Share this magic link or QR code to connect.</p>
-                <!-- [MODIFIED HTML] - Added canvas element for QR code -->
                 <div id="qr-code-container">
                     <canvas id="qr-code-canvas"></canvas>
                 </div>
@@ -441,6 +1235,125 @@
             <div class="modal-footer">
                  <button class="modal-btn" id="cancel-share-btn">Close</button>
                 <button class="modal-btn primary-btn" id="share-link-btn">Share Link</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Settings Modal -->
+    <div class="modal-backdrop" id="settings-modal">
+        <div class="modal">
+            <div class="modal-header"><h3 class="modal-title">Settings</h3></div>
+            <div class="modal-body">
+                <h4>Appearance</h4>
+                <div class="settings-grid">
+                    <div class="setting-card" data-theme="default">
+                        <i class="fas fa-moon"></i>
+                        <h4>Midnight</h4>
+                        <p>Default dark theme</p>
+                    </div>
+                    <div class="setting-card" data-theme="ocean-blue">
+                        <i class="fas fa-water"></i>
+                        <h4>Ocean Blue</h4>
+                        <p>Deep blue tones</p>
+                    </div>
+                    <div class="setting-card" data-theme="forest-green">
+                        <i class="fas fa-tree"></i>
+                        <h4>Forest Green</h4>
+                        <p>Nature-inspired</p>
+                    </div>
+                    <div class="setting-card" data-theme="sunset-orange">
+                        <i class="fas fa-sun"></i>
+                        <h4>Sunset Orange</h4>
+                        <p>Warm orange tones</p>
+                    </div>
+                    <div class="setting-card" data-theme="royal-purple">
+                        <i class="fas fa-crown"></i>
+                        <h4>Royal Purple</h4>
+                        <p>Regal purple theme</p>
+                    </div>
+                </div>
+                
+                <h4 style="margin-top: 24px;">Security</h4>
+                <div class="password-options">
+                    <div class="password-option" data-type="pin">
+                        <i class="fas fa-lock"></i>
+                        <div>
+                            <h4>PIN Protection</h4>
+                            <p>Set a 4-digit PIN to lock the app</p>
+                        </div>
+                    </div>
+                    <div class="password-option" data-type="pattern">
+                        <i class="fas fa-draw-polygon"></i>
+                        <div>
+                            <h4>Pattern Lock</h4>
+                            <p>Create a pattern to unlock the app</p>
+                        </div>
+                    </div>
+                    <div class="password-option" data-type="password">
+                        <i class="fas fa-key"></i>
+                        <div>
+                            <h4>Password Lock</h4>
+                            <p>Set a text password to secure the app</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- PIN Setup -->
+                <div id="pin-setup" style="display: none; margin-top: 20px;">
+                    <h4>Set PIN</h4>
+                    <div class="pin-input-container">
+                        <input type="password" class="pin-input" maxlength="1" inputmode="numeric" pattern="\d*">
+                        <input type="password" class="pin-input" maxlength="1" inputmode="numeric" pattern="\d*">
+                        <input type="password" class="pin-input" maxlength="1" inputmode="numeric" pattern="\d*">
+                        <input type="password" class="pin-input" maxlength="1" inputmode="numeric" pattern="\d*">
+                    </div>
+                    <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+                        <button class="modal-btn" id="cancel-pin-btn">Cancel</button>
+                        <button class="modal-btn primary-btn" id="save-pin-btn">Save</button>
+                    </div>
+                </div>
+                
+                <!-- Pattern Setup -->
+                <div id="pattern-setup" style="display: none; margin-top: 20px;">
+                    <h4>Set Pattern</h4>
+                    <div class="pattern-grid">
+                        <div class="pattern-dot" data-dot="1"></div>
+                        <div class="pattern-dot" data-dot="2"></div>
+                        <div class="pattern-dot" data-dot="3"></div>
+                        <div class="pattern-dot" data-dot="4"></div>
+                        <div class="pattern-dot" data-dot="5"></div>
+                        <div class="pattern-dot" data-dot="6"></div>
+                        <div class="pattern-dot" data-dot="7"></div>
+                        <div class="pattern-dot" data-dot="8"></div>
+                        <div class="pattern-dot" data-dot="9"></div>
+                    </div>
+                    <p id="pattern-instructions">Draw your pattern by connecting at least 4 dots</p>
+                    <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+                        <button class="modal-btn" id="cancel-pattern-btn">Cancel</button>
+                        <button class="modal-btn primary-btn" id="save-pattern-btn">Save</button>
+                    </div>
+                </div>
+                
+                <!-- Password Setup -->
+                <div id="password-setup" style="display: none; margin-top: 20px;">
+                    <h4>Set Password</h4>
+                    <div class="password-input-container">
+                        <input type="password" class="password-input" id="password-input" placeholder="Enter your password">
+                        <button class="toggle-password" id="toggle-password">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="password-input-container">
+                        <input type="password" class="password-input" id="confirm-password-input" placeholder="Confirm password">
+                    </div>
+                    <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+                        <button class="modal-btn" id="cancel-password-btn">Cancel</button>
+                        <button class="modal-btn primary-btn" id="save-password-btn">Save</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn" id="cancel-settings-btn">Close</button>
             </div>
         </div>
     </div>
@@ -454,13 +1367,13 @@
         <video id="local-video" autoplay muted></video>
         <div class="call-controls">
             <button class="call-control-btn" id="toggle-mic-btn" title="Mute/Unmute Mic">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m12 0v-1.5a6 6 0 00-6-6v0a6 6 0 00-6 6v1.5m12 0v-1.5a6 6 0 00-6-6v0a6 6 0 00-6 6v1.5" /></svg>
+                <i class="fas fa-microphone"></i>
             </button>
             <button class="call-control-btn" id="toggle-cam-btn" title="Turn Camera On/Off">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9A2.25 2.25 0 004.5 18.75z" /></svg>
+                <i class="fas fa-video"></i>
             </button>
             <button class="call-control-btn hang-up" id="hang-up-btn" title="Hang Up">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6.75l-9 9M6.75 6.75l9 9" /></svg>
+                <i class="fas fa-phone-slash"></i>
             </button>
         </div>
     </div>
@@ -469,19 +1382,18 @@
         <p id="incoming-call-text">Incoming call...</p>
         <div class="incoming-call-actions">
             <button class="incoming-call-btn" id="decline-call-btn" title="Decline">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6.75l-9 9M6.75 6.75l9 9" /></svg>
+                <i class="fas fa-phone-slash"></i>
             </button>
             <button class="incoming-call-btn" id="accept-call-btn" title="Accept">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 6.75z" /></svg>
+                <i class="fas fa-phone-alt"></i>
             </button>
         </div>
     </div>
 
 
     <script>
-    // Part I & III: Core Architecture, Features & Logic
     const App = {
-        // --- State ---
+        // State
         peer: null,
         myPeerId: null,
         currentConnection: null,
@@ -493,15 +1405,21 @@
         currentCall: null,
         localStream: null,
         incomingCall: null,
+        securityType: null, // 'pin', 'pattern', 'password'
+        securityValue: null,
+        currentTheme: 'default',
+        selectedPattern: [], // For setting the pattern in settings modal
+        lockScreenEnteredPattern: [], // NEW: For entering pattern on lock screen
 
-        // --- DOM Elements ---
+        // DOM Elements
         dom: {},
 
-        // --- Main Initialization ---
+        // Initialization
         init() {
             this.cacheDom();
             this.bindEventListeners();
             this.hardenApplication();
+            this.loadSettings(); // Loads theme and securityType/Value
             this.loadContacts();
             this.renderContacts();
             this.updateChatUIForNoSelection();
@@ -509,32 +1427,30 @@
                 this.initializePeer();
             });
             
-            // Check for mobile and hide sidebar initially
+            // Mobile sidebar handling
             if (window.innerWidth <= 768) {
                 this.dom.appContainer.classList.add('sidebar-hidden');
             } else {
                  this.dom.appContainer.classList.remove('sidebar-hidden');
             }
             
-            // Set initial ARIA state for the new hamburger button
-            const isInitiallyHidden = this.dom.appContainer.classList.contains('sidebar-hidden');
-            this.dom.hamburgerMenu.setAttribute('aria-pressed', !isInitiallyHidden);
+            // Apply security if enabled
+            if (this.securityType && this.securityValue) {
+                this.showLockScreen();
+            }
         },
 
         cacheDom() {
             this.dom = {
                 appContainer: document.getElementById('app-container'),
                 sidebar: document.querySelector('.sidebar'),
-                // [MODIFIED JAVASCRIPT] - Added sidebarCloseBtn to DOM cache
                 sidebarCloseBtn: document.getElementById('sidebar-close-btn'), 
                 hamburgerMenu: document.getElementById('hamburger-menu'),
-                // Sidebar
                 addContactBtn: document.getElementById('add-contact-btn-main'),
                 contactList: document.getElementById('contact-list'),
                 yourIdDisplay: document.getElementById('your-id-display'),
                 copyIdBtn: document.getElementById('copy-id-btn'),
                 shareIdBtn: document.getElementById('share-id-btn'),
-                // Chat Area
                 chatContactName: document.getElementById('chat-contact-name'),
                 chatContactStatus: document.getElementById('chat-contact-status'),
                 messageList: document.getElementById('message-list'),
@@ -546,21 +1462,16 @@
                 ghostModeToggle: document.getElementById('ghost-mode-toggle'),
                 voiceCallBtn: document.getElementById('voice-call-btn'),
                 videoCallBtn: document.getElementById('video-call-btn'),
-                // Modals
                 addContactModal: document.getElementById('add-contact-modal'),
                 contactNameInput: document.getElementById('contact-name-input'),
                 contactIdInput: document.getElementById('contact-id-input'),
                 saveContactBtn: document.getElementById('save-contact-btn'),
                 cancelAddContactBtn: document.getElementById('cancel-add-contact-btn'),
                 shareIdModal: document.getElementById('share-id-modal'),
-                qrCodeContainer: document.getElementById('qr-code-container'),
-                // [MODIFIED JAVASCRIPT] - Added new DOM element for the canvas
                 qrCodeCanvas: document.getElementById('qr-code-canvas'), 
                 shareLinkBtn: document.getElementById('share-link-btn'),
                 cancelShareBtn: document.getElementById('cancel-share-btn'),
-                // Toasts
                 toastContainer: document.getElementById('toast-container'),
-                // Call UI
                 callOverlay: document.getElementById('call-overlay'),
                 remoteVideo: document.getElementById('remote-video'),
                 localVideo: document.getElementById('local-video'),
@@ -571,10 +1482,45 @@
                 incomingCallText: document.getElementById('incoming-call-text'),
                 acceptCallBtn: document.getElementById('accept-call-btn'),
                 declineCallBtn: document.getElementById('decline-call-btn'),
+                settingsBtn: document.getElementById('settings-btn'),
+                settingsModal: document.getElementById('settings-modal'),
+                cancelSettingsBtn: document.getElementById('cancel-settings-btn'),
+                lockScreen: document.getElementById('lock-screen'),
+                unlockBtn: document.getElementById('unlock-btn'),
+                
+                // NEW: Lock screen specific elements
+                lockScreenMessage: document.getElementById('lock-screen-message'),
+                lockPinContainer: document.getElementById('lock-pin-container'),
+                lockPinInputs: document.querySelectorAll('#lock-pin-container .pin-input'),
+                lockPatternContainer: document.getElementById('lock-pattern-container'),
+                lockPatternDots: document.querySelectorAll('#lock-pattern-container .pattern-dot'),
+                lockPatternInstructions: document.getElementById('lock-pattern-instructions'),
+                lockPasswordContainer: document.getElementById('lock-password-container'),
+                lockPasswordInput: document.getElementById('lock-password-input'),
+                lockTogglePasswordBtn: document.getElementById('lock-toggle-password'),
+
+                // Settings modal elements (already existing)
+                pinInputs: document.querySelectorAll('#pin-setup .pin-input'), // Original PIN inputs in settings
+                patternDots: document.querySelectorAll('#pattern-setup .pattern-dot'), // Original pattern dots in settings
+                patternInstructions: document.getElementById('pattern-instructions'), // Instructions in settings
+                passwordInput: document.getElementById('password-input'), // Original password input in settings
+                confirmPasswordInput: document.getElementById('confirm-password-input'), // Original confirm password in settings
+                togglePasswordBtn: document.getElementById('toggle-password'), // Original password toggle in settings
+                settingCards: document.querySelectorAll('.setting-card'),
+                passwordOptions: document.querySelectorAll('.password-option'),
+                pinSetup: document.getElementById('pin-setup'),
+                patternSetup: document.getElementById('pattern-setup'),
+                passwordSetup: document.getElementById('password-setup'),
+                savePinBtn: document.getElementById('save-pin-btn'),
+                cancelPinBtn: document.getElementById('cancel-pin-btn'),
+                savePatternBtn: document.getElementById('save-pattern-btn'),
+                cancelPatternBtn: document.getElementById('cancel-pattern-btn'),
+                savePasswordBtn: document.getElementById('save-password-btn'),
+                cancelPasswordBtn: document.getElementById('cancel-password-btn')
             };
         },
 
-        // --- Security & Hardening ---
+        // Security & Hardening
         hardenApplication() {
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'F12' ||
@@ -587,7 +1533,7 @@
             });
         },
         
-        // --- E2EE Cryptography ---
+        // E2EE Cryptography
         async generateKeys() {
             this.keyPair = await window.crypto.subtle.generateKey(
                 { name: 'ECDH', namedCurve: 'P-384' },
@@ -626,7 +1572,6 @@
                 encodedText
             );
             
-            // Using array for smaller payload vs base64 strings
             return {
                 iv: Array.from(iv),
                 data: Array.from(new Uint8Array(encryptedData))
@@ -649,17 +1594,15 @@
             return new TextDecoder().decode(decryptedData);
         },
 
-        // --- PeerJS & Connection Management ---
+        // PeerJS & Connection Management
         initializePeer() {
-            this.peer = new Peer({
-                // For local testing, you might need to specify host/port
-                // For production, PeerServer cloud is used by default
-            });
+            this.peer = new Peer();
 
             this.peer.on('open', (id) => {
                 this.myPeerId = id;
                 this.dom.yourIdDisplay.textContent = id;
                 this.handleMagicLink();
+                console.log('PeerJS ID obtained:', id); // For debugging ID display
             });
 
             this.peer.on('connection', (conn) => {
@@ -726,7 +1669,6 @@
                         const myPublicKeyJwk = await window.crypto.subtle.exportKey('jwk', this.keyPair.publicKey);
                         conn.send({ type: 'handshake-ack', publicKey: myPublicKeyJwk });
                         
-                        // Receiver considers connection secure now
                         this.updateConnectionStatusUI('Connected');
                         this.setChatInputEnabled(true);
                         this.addSystemMessage(`Connection with ${this.getContactName(conn.peer)} is now secure.`);
@@ -736,7 +1678,6 @@
                         const sharedSecret = await this.deriveSharedSecret(data.publicKey);
                         this.sharedSecrets.set(conn.peer, sharedSecret);
 
-                        // Initiator considers connection secure now
                         this.updateConnectionStatusUI('Connected');
                         this.setChatInputEnabled(true);
                         this.addSystemMessage(`Connection with ${this.getContactName(conn.peer)} is now secure.`);
@@ -755,7 +1696,7 @@
             }
         },
 
-        // --- UI & UX Methods ---
+        // UI & UX Methods
         showModal(modal) {
             modal.classList.add('visible');
         },
@@ -771,6 +1712,8 @@
             
             if (type === 'success') toast.style.backgroundColor = 'var(--success-green)';
             if (type === 'error') toast.style.backgroundColor = 'var(--error-red)';
+            if (type === 'warning') toast.style.backgroundColor = 'var(--warning-yellow)';
+
 
             this.dom.toastContainer.appendChild(toast);
             setTimeout(() => {
@@ -781,22 +1724,44 @@
 
         renderContacts() {
             this.dom.contactList.innerHTML = '';
-            this.contacts.forEach((contact, index) => {
-                const li = document.createElement('li');
-                li.className = 'contact-item';
-                li.dataset.peerId = contact.peerId;
-                if(contact.peerId === this.activePeerId) {
-                    li.classList.add('active');
-                }
-                li.style.animationDelay = `${index * 50}ms`;
-                li.innerHTML = `
-                    <span class="contact-name">${contact.name}</span>
-                    <button class="delete-contact-btn" data-peer-id="${contact.peerId}" title="Delete Contact">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-                    </button>
-                `;
-                this.dom.contactList.appendChild(li);
+            
+            // Separate pinned and unpinned contacts
+            const pinnedContacts = this.contacts.filter(c => c.pinned);
+            const unpinnedContacts = this.contacts.filter(c => !c.pinned);
+            
+            // Render pinned contacts first
+            pinnedContacts.forEach((contact, index) => {
+                this.renderContactItem(contact, index, true);
             });
+            
+            // Render unpinned contacts
+            unpinnedContacts.forEach((contact, index) => {
+                this.renderContactItem(contact, index + pinnedContacts.length, false);
+            });
+        },
+        
+        renderContactItem(contact, index, isPinned) {
+            const li = document.createElement('li');
+            li.className = `contact-item ${isPinned ? 'pinned' : ''}`;
+            li.dataset.peerId = contact.peerId;
+            
+            if(contact.peerId === this.activePeerId) {
+                li.classList.add('active');
+            }
+            
+            li.style.animationDelay = `${index * 50}ms`;
+            li.innerHTML = `
+                <span class="contact-name">${contact.name}</span>
+                <div class="contact-actions">
+                    <button class="contact-action-btn pin-contact-btn" data-peer-id="${contact.peerId}" title="${contact.pinned ? 'Unpin' : 'Pin'}">
+                        <i class="fas fa-thumbtack ${contact.pinned ? 'active' : ''}"></i>
+                    </button>
+                    <button class="contact-action-btn delete-contact-btn" data-peer-id="${contact.peerId}" title="Delete Contact">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            `;
+            this.dom.contactList.appendChild(li);
         },
 
         addMessageToUI(content, type, senderName, isImage = false, fileName = '') {
@@ -818,7 +1783,7 @@
             const metaHTML = type === 'theirs'
                 ? `<div class="message-meta">
                        <button class="translate-btn" title="Translate">
-                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C13.18 7.061 14.122 7.5 15 7.5h6M9 15V6.75A2.25 2.25 0 0111.25 4.5h3.75a2.25 2.25 0 012.25 2.25v4.133m-12.867 5.197L3 21m0 0l2.133-2.133" /></svg>
+                           <i class="fas fa-language"></i>
                        </button>
                    </div>`
                 : '';
@@ -876,12 +1841,17 @@
             this.dom.videoCallBtn.disabled = !enabled;
         },
         
-        // --- Call Logic ---
+        // Call Logic
         async initiateCall(video = false) {
             try {
-                this.localStream = await navigator.mediaDevices.getUserMedia({ video, audio: true });
+                this.localStream = await navigator.mediaDevices.getUserMedia({ 
+                    video,
+                    audio: true 
+                });
                 this.dom.localVideo.srcObject = this.localStream;
-                this.currentCall = this.peer.call(this.activePeerId, this.localStream);
+                this.currentCall = this.peer.call(this.activePeerId, this.localStream, {
+                    metadata: { video }
+                });
                 this.showCallUI();
                 this.setupCallListeners(this.currentCall);
             } catch (err) {
@@ -893,7 +1863,7 @@
         handleIncomingCall(call) {
             this.incomingCall = call;
             const contactName = this.getContactName(call.peer);
-            this.dom.incomingCallText.textContent = `Incoming call from ${contactName}`;
+            this.dom.incomingCallText.textContent = `Incoming ${call.metadata.video ? 'video' : 'voice'} call from ${contactName}`;
             this.dom.incomingCallNotification.classList.add('visible');
         },
 
@@ -901,7 +1871,10 @@
             try {
                 this.dom.incomingCallNotification.classList.remove('visible');
                 const video = this.incomingCall.metadata && this.incomingCall.metadata.video;
-                this.localStream = await navigator.mediaDevices.getUserMedia({ video, audio: true });
+                this.localStream = await navigator.mediaDevices.getUserMedia({ 
+                    video, 
+                    audio: true 
+                });
                 this.dom.localVideo.srcObject = this.localStream;
                 this.incomingCall.answer(this.localStream);
                 this.currentCall = this.incomingCall;
@@ -959,8 +1932,101 @@
             this.dom.toggleMicBtn.classList.remove('off');
             this.dom.toggleCamBtn.classList.remove('off');
         },
+        
+        // Security & Settings
+        loadSettings() {
+            // Load theme
+            const savedTheme = localStorage.getItem('aetherlink-theme');
+            if (savedTheme) {
+                this.currentTheme = savedTheme;
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                
+                // Update active theme card - Needs to be done after cacheDom for initial load
+                // This will happen once bindEventListeners is called, or we could add a method call
+            }
+            
+            // Load security settings
+            const securityType = localStorage.getItem('aetherlink-security-type');
+            const securityValue = localStorage.getItem('aetherlink-security-value');
+            
+            if (securityType && securityValue) {
+                this.securityType = securityType;
+                this.securityValue = securityValue;
+            }
+        },
+        
+        saveSettings() {
+            localStorage.setItem('aetherlink-theme', this.currentTheme);
+            
+            // Only save security if it's set
+            if (this.securityType && this.securityValue) {
+                localStorage.setItem('aetherlink-security-type', this.securityType);
+                localStorage.setItem('aetherlink-security-value', this.securityValue);
+            } else { // If security is being removed
+                localStorage.removeItem('aetherlink-security-type');
+                localStorage.removeItem('aetherlink-security-value');
+            }
+        },
+        
+        showLockScreen() {
+            this.dom.appContainer.style.display = 'none'; // Hide main app
+            this.dom.lockScreen.style.display = 'flex';
 
-        // --- Event Handlers & Binding ---
+            // Hide all input containers first
+            this.dom.lockPinContainer.style.display = 'none';
+            this.dom.lockPatternContainer.style.display = 'none';
+            this.dom.lockPatternInstructions.style.display = 'none'; // Also hide instructions
+            this.dom.lockPasswordContainer.style.display = 'none';
+
+            // Show and focus the correct input type
+            if (this.securityType === 'pin') {
+                this.dom.lockPinContainer.style.display = 'flex';
+                this.dom.lockPinInputs.forEach(input => input.value = ''); // Clear inputs
+                this.dom.lockPinInputs[0].focus();
+                this.dom.lockScreenMessage.textContent = 'Enter your PIN to continue';
+            } else if (this.securityType === 'pattern') {
+                this.dom.lockPatternContainer.style.display = 'grid'; // Use 'grid' as it's a grid layout
+                this.dom.lockPatternInstructions.style.display = 'block';
+                this.dom.lockPatternInstructions.textContent = 'Draw your pattern to unlock';
+                this.lockScreenEnteredPattern = []; // Initialize for unlock attempt
+                this.dom.lockPatternDots.forEach(dot => dot.classList.remove('selected')); // Clear visual
+                this.dom.lockScreenMessage.textContent = 'Draw your pattern to unlock';
+            } else if (this.securityType === 'password') {
+                this.dom.lockPasswordContainer.style.display = 'block';
+                this.dom.lockPasswordInput.value = ''; // Clear input
+                this.dom.lockPasswordInput.focus();
+                this.dom.lockScreenMessage.textContent = 'Enter your password to continue';
+            } else {
+                // No security set, should not happen if called correctly
+                this.hideLockScreen();
+                this.dom.appContainer.style.display = 'flex'; // Show main app
+                this.showToast('No security set. Access granted.', 'warning');
+            }
+        },
+        
+        hideLockScreen() {
+            this.dom.lockScreen.style.display = 'none';
+            this.dom.appContainer.style.display = 'flex'; // Show main app
+        },
+        
+        validatePin() {
+            let enteredPin = '';
+            this.dom.lockPinInputs.forEach(input => { // Use lockPinInputs
+                enteredPin += input.value;
+            });
+            return enteredPin === this.securityValue;
+        },
+        
+        validatePattern() {
+            // For demo purposes, we'll just compare arrays
+            return this.lockScreenEnteredPattern.join('') === this.securityValue;
+        },
+        
+        validatePassword() {
+            return this.dom.lockPasswordInput.value === this.securityValue; // Use lockPasswordInput
+        },
+
+        // Event Handlers & Binding
         bindEventListeners() {
             // Sidebar
             this.dom.addContactBtn.addEventListener('click', () => {
@@ -968,15 +2034,17 @@
                 this.dom.contactIdInput.value = '';
                 this.showModal(this.dom.addContactModal);
             });
-            // [MODIFIED JAVASCRIPT] - Added listener for sidebar close button
+            
             this.dom.sidebarCloseBtn.addEventListener('click', () => {
                 this.dom.appContainer.classList.add('sidebar-hidden');
-                this.dom.hamburgerMenu.setAttribute('aria-pressed', false); // Sidebar is now hidden, so hamburger is not pressed
+                // The hamburger menu state implicitly becomes false when sidebar is hidden
+                this.dom.hamburgerMenu.setAttribute('aria-pressed', false);
             });
-
+            
             this.dom.contactList.addEventListener('click', (e) => {
                 const contactItem = e.target.closest('.contact-item');
                 const deleteBtn = e.target.closest('.delete-contact-btn');
+                const pinBtn = e.target.closest('.pin-contact-btn');
 
                 if (deleteBtn) {
                     e.stopPropagation();
@@ -986,32 +2054,38 @@
                     return;
                 }
                 
+                if (pinBtn) {
+                    e.stopPropagation();
+                    this.togglePinContact(pinBtn.dataset.peerId);
+                    return;
+                }
+                
                 if (contactItem) {
                     const peerId = contactItem.dataset.peerId;
                     if(peerId === this.activePeerId && this.currentConnection) return;
                     
                     this.activePeerId = peerId;
-                    this.renderContacts(); // Re-render to show active state
+                    this.renderContacts();
                     this.connectToPeer(peerId);
                     
                     if (window.innerWidth <= 768) {
                         this.dom.appContainer.classList.add('sidebar-hidden');
-                        this.dom.hamburgerMenu.setAttribute('aria-pressed', false); // Update hamburger state on mobile close
+                        this.dom.hamburgerMenu.setAttribute('aria-pressed', false); // Hide sidebar means unpressed hamburger
                     }
                 }
             });
+            
             this.dom.copyIdBtn.addEventListener('click', () => {
                 navigator.clipboard.writeText(this.myPeerId)
                     .then(() => this.showToast('ID Copied!', 'success'))
                     .catch(err => this.showToast('Failed to copy ID.', 'error'));
             });
+            
             this.dom.shareIdBtn.addEventListener('click', () => {
                 const magicLink = `${location.href.split('#')[0]}#${this.myPeerId}`;
-                // [MODIFIED JAVASCRIPT] - Clear the canvas context before drawing new QR code
                 const ctx = this.dom.qrCodeCanvas.getContext('2d');
                 ctx.clearRect(0, 0, this.dom.qrCodeCanvas.width, this.dom.qrCodeCanvas.height);
                 
-                // [MODIFIED JAVASCRIPT] - Target the actual canvas element
                 QRCode.toCanvas(this.dom.qrCodeCanvas, magicLink, {width: 256}, (error) => {
                     if (error) {
                         console.error("QR Code generation error:", error);
@@ -1026,20 +2100,24 @@
                 const isHiddenAfterToggle = this.dom.appContainer.classList.toggle('sidebar-hidden');
                 this.dom.hamburgerMenu.setAttribute('aria-pressed', !isHiddenAfterToggle);
             });
+            
             this.dom.messageForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 this.sendMessage();
             });
+            
             this.dom.ghostModeToggle.addEventListener('click', () => {
                 this.ghostMode = !this.ghostMode;
                 this.dom.ghostModeToggle.classList.toggle('active', this.ghostMode);
                 this.addSystemMessage(`Ghost mode is now ${this.ghostMode ? 'ON' : 'OFF'}. Messages will disappear faster.`);
             });
+            
             this.dom.fileInput.addEventListener('change', (e) => {
                 const file = e.target.files[0];
                 if(file) this.sendFile(file);
             });
-             this.dom.messageList.addEventListener('click', (e) => {
+            
+            this.dom.messageList.addEventListener('click', (e) => {
                 const translateBtn = e.target.closest('.translate-btn');
                 if (translateBtn) {
                     this.handleTranslate(translateBtn);
@@ -1052,6 +2130,7 @@
             this.dom.addContactModal.addEventListener('click', (e) => {
                 if(e.target === this.dom.addContactModal) this.hideModal(this.dom.addContactModal);
             });
+            
             this.dom.shareLinkBtn.addEventListener('click', () => {
                 const magicLink = `${location.href.split('#')[0]}#${this.myPeerId}`;
                 if (navigator.share) {
@@ -1066,21 +2145,299 @@
                         .catch(err => this.showToast('Failed to copy link.', 'error'));
                 }
             });
+            
             this.dom.cancelShareBtn.addEventListener('click', () => this.hideModal(this.dom.shareIdModal));
+            
+            // Settings
+            this.dom.settingsBtn.addEventListener('click', () => {
+                this.showModal(this.dom.settingsModal);
+                // Highlight active theme card
+                this.dom.settingCards.forEach(card => {
+                    card.classList.remove('active');
+                    if (card.dataset.theme === this.currentTheme) {
+                        card.classList.add('active');
+                    }
+                });
+                // Highlight active security option
+                this.dom.passwordOptions.forEach(option => {
+                    option.classList.remove('active');
+                    if (option.dataset.type === this.securityType) {
+                        option.classList.add('active');
+                    }
+                });
+                // Hide all security setup sections initially when opening settings modal
+                this.dom.pinSetup.style.display = 'none';
+                this.dom.patternSetup.style.display = 'none';
+                this.dom.passwordSetup.style.display = 'none';
+            });
+            
+            this.dom.cancelSettingsBtn.addEventListener('click', () => {
+                this.hideModal(this.dom.settingsModal);
+            });
+            
+            // Theme selection
+            this.dom.settingCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const theme = card.dataset.theme;
+                    this.currentTheme = theme;
+                    document.documentElement.setAttribute('data-theme', theme);
+                    this.saveSettings();
+                    
+                    // Update active state
+                    this.dom.settingCards.forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+                    
+                    this.showToast(`Theme changed to ${card.querySelector('h4').textContent}`, 'success');
+                });
+            });
+            
+            // Security options (in settings modal)
+            this.dom.passwordOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    const type = option.dataset.type;
+                    
+                    // Hide all setup forms
+                    this.dom.pinSetup.style.display = 'none';
+                    this.dom.patternSetup.style.display = 'none';
+                    this.dom.passwordSetup.style.display = 'none';
+                    
+                    // Show selected form and clear inputs for setup
+                    if (type === 'pin') {
+                        this.dom.pinSetup.style.display = 'block';
+                        this.dom.pinInputs.forEach(input => input.value = '');
+                        this.dom.pinInputs[0].focus();
+                    } else if (type === 'pattern') {
+                        this.dom.patternSetup.style.display = 'block';
+                        this.selectedPattern = []; // Reset for new pattern setting
+                        this.dom.patternDots.forEach(d => d.classList.remove('selected'));
+                        this.dom.patternInstructions.textContent = 'Draw your pattern by connecting at least 4 dots';
+                    } else if (type === 'password') {
+                        this.dom.passwordSetup.style.display = 'block';
+                        this.dom.passwordInput.value = '';
+                        this.dom.confirmPasswordInput.value = '';
+                        this.dom.passwordInput.focus();
+                    }
+                    
+                    // Update active state
+                    this.dom.passwordOptions.forEach(o => o.classList.remove('active'));
+                    option.classList.add('active');
+                });
+            });
+            
+            // PIN input handling (in settings modal)
+            this.dom.pinInputs.forEach((input, index) => {
+                input.addEventListener('input', () => {
+                    if (input.value && index < this.dom.pinInputs.length - 1) {
+                        this.dom.pinInputs[index + 1].focus();
+                    }
+                });
+                
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && !input.value && index > 0) {
+                        this.dom.pinInputs[index - 1].focus();
+                    }
+                });
+            });
+            
+            // Save PIN (in settings modal)
+            this.dom.savePinBtn.addEventListener('click', () => {
+                let pin = '';
+                this.dom.pinInputs.forEach(input => {
+                    pin += input.value;
+                });
+                
+                if (pin.length === 4) {
+                    this.securityType = 'pin';
+                    this.securityValue = pin;
+                    this.saveSettings();
+                    this.showToast('PIN set successfully', 'success');
+                    this.dom.pinSetup.style.display = 'none';
+                    this.dom.passwordOptions.forEach(o => o.classList.remove('active')); // Deselect option
+                } else {
+                    this.showToast('Please enter a 4-digit PIN', 'error');
+                }
+            });
+            
+            this.dom.cancelPinBtn.addEventListener('click', () => {
+                this.dom.pinSetup.style.display = 'none';
+                this.dom.passwordOptions.forEach(o => o.classList.remove('active'));
+                this.dom.pinInputs.forEach(input => input.value = ''); // Clear inputs
+            });
+            
+            // Pattern handling (in settings modal)
+            this.dom.patternDots.forEach(dot => {
+                dot.addEventListener('click', () => {
+                    const dotId = dot.dataset.dot;
+                    
+                    if (!this.selectedPattern.includes(dotId)) {
+                        this.selectedPattern.push(dotId);
+                        dot.classList.add('selected');
+                        
+                        if (this.selectedPattern.length >= 4) {
+                            this.dom.patternInstructions.textContent = 'Pattern saved. Click save to confirm.';
+                        }
+                    } else {
+                        // Allow deselection for setup, or clear all if trying to draw again
+                        this.showToast('To redraw, cancel and reopen pattern setup.', 'info');
+                    }
+                });
+            });
+            
+            // Save pattern (in settings modal)
+            this.dom.savePatternBtn.addEventListener('click', () => {
+                if (this.selectedPattern.length >= 4) {
+                    this.securityType = 'pattern';
+                    this.securityValue = this.selectedPattern.join(''); // Store as string
+                    this.saveSettings();
+                    this.showToast('Pattern set successfully', 'success');
+                    this.dom.patternSetup.style.display = 'none';
+                    this.dom.passwordOptions.forEach(o => o.classList.remove('active')); // Deselect option
+
+                    // Reset pattern dots for next time settings modal is opened
+                    this.selectedPattern = [];
+                    this.dom.patternDots.forEach(d => d.classList.remove('selected'));
+                } else {
+                    this.showToast('Pattern must have at least 4 dots', 'error');
+                }
+            });
+            
+            this.dom.cancelPatternBtn.addEventListener('click', () => {
+                this.dom.patternSetup.style.display = 'none';
+                this.dom.passwordOptions.forEach(o => o.classList.remove('active'));
+                this.selectedPattern = []; // Clear pattern
+                this.dom.patternDots.forEach(d => d.classList.remove('selected')); // Clear visual
+                this.dom.patternInstructions.textContent = 'Draw your pattern by connecting at least 4 dots'; // Reset instructions
+            });
+            
+            // Password handling (in settings modal)
+            this.dom.togglePasswordBtn.addEventListener('click', () => {
+                const type = this.dom.passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                this.dom.passwordInput.setAttribute('type', type);
+                this.dom.confirmPasswordInput.setAttribute('type', type);
+                this.dom.togglePasswordBtn.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+            });
+            
+            // Save password (in settings modal)
+            this.dom.savePasswordBtn.addEventListener('click', () => {
+                const password = this.dom.passwordInput.value;
+                const confirmPassword = this.dom.confirmPasswordInput.value;
+                
+                if (password && password === confirmPassword) {
+                    this.securityType = 'password';
+                    this.securityValue = password;
+                    this.saveSettings();
+                    this.showToast('Password set successfully', 'success');
+                    this.dom.passwordSetup.style.display = 'none';
+                    this.dom.passwordOptions.forEach(o => o.classList.remove('active')); // Deselect option
+                    
+                    // Clear inputs
+                    this.dom.passwordInput.value = '';
+                    this.dom.confirmPasswordInput.value = '';
+                } else {
+                    this.showToast('Passwords do not match or are empty', 'error');
+                }
+            });
+            
+            this.dom.cancelPasswordBtn.addEventListener('click', () => {
+                this.dom.passwordSetup.style.display = 'none';
+                this.dom.passwordOptions.forEach(o => o.classList.remove('active'));
+                this.dom.passwordInput.value = '';
+                this.dom.confirmPasswordInput.value = '';
+                this.dom.passwordInput.setAttribute('type', 'password'); // Reset type
+                this.dom.confirmPasswordInput.setAttribute('type', 'password');
+                this.dom.togglePasswordBtn.innerHTML = '<i class="fas fa-eye"></i>'; // Reset icon
+            });
+            
+            // Unlock button (on lock screen)
+            this.dom.unlockBtn.addEventListener('click', () => {
+                let isValid = false;
+                
+                if (this.securityType === 'pin') {
+                    isValid = this.validatePin();
+                } else if (this.securityType === 'pattern') {
+                    isValid = this.validatePattern();
+                } else if (this.securityType === 'password') {
+                    isValid = this.validatePassword();
+                }
+                
+                if (isValid) {
+                    this.hideLockScreen();
+                    this.showToast('Unlocked successfully', 'success');
+                    // Clear all lock screen inputs regardless of type
+                    this.dom.lockPinInputs.forEach(input => input.value = '');
+                    this.lockScreenEnteredPattern = [];
+                    this.dom.lockPatternDots.forEach(d => d.classList.remove('selected'));
+                    this.dom.lockPasswordInput.value = '';
+                } else {
+                    this.showToast('Invalid passcode', 'error');
+                    
+                    // Clear inputs based on type
+                    if (this.securityType === 'pin') {
+                        this.dom.lockPinInputs.forEach(input => input.value = '');
+                        this.dom.lockPinInputs[0].focus();
+                    } else if (this.securityType === 'pattern') {
+                        this.lockScreenEnteredPattern = [];
+                        this.dom.lockPatternDots.forEach(d => d.classList.remove('selected'));
+                        this.dom.lockPatternInstructions.textContent = 'Draw your pattern to unlock'; // Reset instructions
+                    } else if (this.securityType === 'password') {
+                        this.dom.lockPasswordInput.value = '';
+                        this.dom.lockPasswordInput.focus();
+                    }
+                }
+            });
+
+            // Lock Screen PIN input handling (copy-pasted from settings for lock screen)
+            this.dom.lockPinInputs.forEach((input, index) => {
+                input.addEventListener('input', () => {
+                    if (input.value && index < this.dom.lockPinInputs.length - 1) {
+                        this.dom.lockPinInputs[index + 1].focus();
+                    }
+                });
+                
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && !input.value && index > 0) {
+                        this.dom.lockPinInputs[index - 1].focus();
+                    }
+                });
+            });
+
+            // Lock Screen Pattern handling
+            this.dom.lockPatternDots.forEach(dot => {
+                dot.addEventListener('click', () => {
+                    const dotId = dot.dataset.dot;
+                    if (!this.lockScreenEnteredPattern.includes(dotId)) {
+                        this.lockScreenEnteredPattern.push(dotId);
+                        dot.classList.add('selected'); // Visual feedback
+                    }
+                    // For unlock, user might click multiple times to draw. No explicit "save" here.
+                    // The 'unlock-btn' will validate the current state of lockScreenEnteredPattern.
+                });
+            });
+            
+            // Lock Screen Password toggle
+            this.dom.lockTogglePasswordBtn.addEventListener('click', () => {
+                const type = this.dom.lockPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                this.dom.lockPasswordInput.setAttribute('type', type);
+                this.dom.lockTogglePasswordBtn.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+            });
             
             // Call Controls
             this.dom.voiceCallBtn.addEventListener('click', () => this.initiateCall(false));
             this.dom.videoCallBtn.addEventListener('click', () => this.initiateCall(true));
             this.dom.hangUpBtn.addEventListener('click', () => this.endCall());
             this.dom.toggleMicBtn.addEventListener('click', () => {
-                const enabled = this.localStream.getAudioTracks()[0].enabled;
-                this.localStream.getAudioTracks()[0].enabled = !enabled;
-                this.dom.toggleMicBtn.classList.toggle('off', enabled);
+                if (this.localStream) {
+                    const enabled = this.localStream.getAudioTracks()[0].enabled;
+                    this.localStream.getAudioTracks()[0].enabled = !enabled;
+                    this.dom.toggleMicBtn.classList.toggle('off', enabled);
+                }
             });
             this.dom.toggleCamBtn.addEventListener('click', () => {
-                const enabled = this.localStream.getVideoTracks()[0].enabled;
-                this.localStream.getVideoTracks()[0].enabled = !enabled;
-                this.dom.toggleCamBtn.classList.toggle('off', enabled);
+                if (this.localStream) {
+                    const enabled = this.localStream.getVideoTracks()[0].enabled;
+                    this.localStream.getVideoTracks()[0].enabled = !enabled;
+                    this.dom.toggleCamBtn.classList.toggle('off', enabled);
+                }
             });
             this.dom.acceptCallBtn.addEventListener('click', () => this.answerCall());
             this.dom.declineCallBtn.addEventListener('click', () => this.declineCall());
@@ -1120,7 +2477,7 @@
             }
         },
 
-        // --- Helper & Data Methods ---
+        // Helper & Data Methods
         loadContacts() {
             const contacts = localStorage.getItem('aetherlink-contacts');
             this.contacts = contacts ? JSON.parse(contacts) : [];
@@ -1134,7 +2491,7 @@
                     this.showToast('Contact with this Peer ID already exists.', 'error');
                     return;
                 }
-                this.contacts.push({ name, peerId });
+                this.contacts.push({ name, peerId, pinned: false });
                 localStorage.setItem('aetherlink-contacts', JSON.stringify(this.contacts));
                 this.renderContacts();
                 this.hideModal(this.dom.addContactModal);
@@ -1152,6 +2509,16 @@
                 this.activePeerId = null;
             }
         },
+        
+        togglePinContact(peerId) {
+            const contact = this.contacts.find(c => c.peerId === peerId);
+            if (contact) {
+                contact.pinned = !contact.pinned;
+                localStorage.setItem('aetherlink-contacts', JSON.stringify(this.contacts));
+                this.renderContacts();
+                this.showToast(`Contact ${contact.pinned ? 'pinned' : 'unpinned'}`, 'success');
+            }
+        },
 
         getContactByPeerId(peerId) {
             return this.contacts.find(c => c.peerId === peerId);
@@ -1165,17 +2532,16 @@
         handleMagicLink() {
             const peerId = location.hash.substring(1);
             if (peerId && peerId !== this.myPeerId) {
-                location.hash = ''; // Clear hash
+                location.hash = '';
                 if (this.contacts.some(c => c.peerId === peerId)) {
-                    this.showToast('You already have this contact. Selecting them now.');
-                    // Find and click the contact
+                    this.showToast('You already have this contact. Selecting them now.', 'info');
                     const contactEl = this.dom.contactList.querySelector(`[data-peer-id="${peerId}"]`);
                     if(contactEl) contactEl.click();
                 } else {
                     this.dom.contactIdInput.value = peerId;
                     this.dom.contactNameInput.value = '';
                     this.showModal(this.dom.addContactModal);
-                    this.showToast('Magic Link detected! Please name your new contact.');
+                    this.showToast('Magic Link detected! Please name your new contact.', 'info');
                 }
             }
         },
@@ -1231,4 +2597,5 @@
 
     window.onload = () => App.init();
     </script>
-</body></html>
+</body>
+</html>
