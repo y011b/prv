@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AetherLink: Secure & Private Messaging</title>
+    
+    <!-- CDNs & Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- Modern Google-Inspired CSS --- */
+        
+        /* 1. THEME & COLOR VARIABLES */
+        :root {
+            /* Light Theme (Default) */
+            --bg-color: #ffffff; /* White background */
+            --surface-color: #f8f9fa; /* Card and container background */
+            --primary-text-color: #202124; /* Dark gray for text */
+            --secondary-text-color: #5f6368; /* Lighter gray for secondary text */
+            --accent-color: #6d28d9; /* AetherLink's Purple */
+            --accent-color-hover: #5b21b6;
+            --accent-text-color: #ffffff; /* Text on accent-colored backgrounds */
+            --border-color: #e0e0e0; /* Subtle borders */
+
+            --font-family: 'Inter', sans-serif;
+            --radius-md: 12px;
+            --radius-lg: 24px;
+            --shadow-subtle: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lifted: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-theme {
+            --bg-color: #121212; /* Black background */
+            --surface-color: #1e1e1e;
+            --primary-text-color: #e8eaed;
+            --secondary-text-color: #9aa0a6;
+            --accent-color: #8B5CF6;
+            --accent-color-hover: #7C3AED;
+            --border-color: #3c4043;
+        }
+
+        /* 2. GLOBAL STYLES */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--secondary-text-color);
+            line-height: 1.7;
+            padding: 2rem 1rem;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        /* 3. LAYOUT & CONTAINER */
+        .container {
+            max-width: 850px;
+            width: 100%;
+            margin: 0 auto;
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 4. HEADER & TYPOGRAPHY */
+        header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        header .logo-icon {
+            font-size: 4rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            display: inline-block;
+            animation: popIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        header .logo-text {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-text-color);
+            letter-spacing: -0.5px;
+        }
+
+        main {
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-text-color);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            letter-spacing: -1px;
+        }
+
+        main > p {
+            font-size: 1.2rem;
+            max-width: 650px;
+            margin: 0 auto 2.5rem auto;
+            color: var(--secondary-text-color);
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--primary-text-color);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-text-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        h3 i {
+            color: var(--accent-color);
+        }
+
+        /* 5. BUTTONS */
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.875rem 1.75rem;
+            border-radius: 999px; /* Pill shape */
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .button:active {
+            transform: translateY(0);
+            box-shadow: var(--shadow-subtle);
+        }
+        
+        .button i {
+            margin-right: 0.5rem;
+        }
+
+        .button.primary {
+            background-color: var(--accent-color);
+            color: var(--accent-text-color);
+        }
+        .button.primary:hover {
+            background-color: var(--accent-color-hover);
+        }
+
+        .button.secondary {
+            background-color: transparent;
+            color: var(--accent-color);
+            border-color: var(--border-color);
+        }
+        .button.secondary:hover {
+            background-color: var(--accent-color);
+            color: var(--accent-text-color);
+            border-color: var(--accent-color);
+        }
+
+        /* 6. INSTRUCTIONS & CARDS */
+        .instructions-section {
+            margin-top: 4rem;
+            padding-top: 3rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .instructions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            text-align: left;
+        }
+
+        .instruction-card {
+            background-color: var(--surface-color);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            padding: 1.75rem;
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .instruction-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lifted);
+            border-color: var(--accent-color);
+        }
+
+        .instruction-card p {
+            font-size: 0.95rem;
+            color: var(--secondary-text-color);
+            margin-bottom: 1rem;
+        }
+        
+        .instruction-card ul {
+            list-style: none;
+            padding-left: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .instruction-card ul li {
+            position: relative;
+            padding-left: 1.75rem;
+            font-size: 0.9rem;
+            color: var(--secondary-text-color);
+        }
+
+        .instruction-card ul li::before {
+            content: "\f00c"; /* Checkmark icon */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            color: var(--accent-color);
+            position: absolute;
+            left: 0;
+            top: 4px;
+            font-size: 0.8rem;
+        }
+
+        /* New App Icon Preview */
+        .app-icon-preview {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            background-color: rgba(128, 128, 128, 0.05);
+            border-radius: var(--radius-md);
+        }
+        .app-icon-preview img {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-subtle);
+        }
+        .app-icon-preview .app-name {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--primary-text-color);
+        }
+        
+        /* 7. FOOTER */
+        footer {
+            margin-top: 4rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--secondary-text-color);
+            opacity: 0.7;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--secondary-text-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.2s ease;
+        }
+        .theme-toggle:hover {
+            color: var(--primary-text-color);
+            border-color: var(--primary-text-color);
+            transform: rotate(15deg);
+        }
+        
+        /* 8. RESPONSIVENESS */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.25rem;
+            }
+            
+            main > p {
+                font-size: 1.1rem;
+            }
+
+            .instructions-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="dark-theme"> 
+    <!-- Default is dark. Remove class for light theme. -->
+
+    <div class="container">
+        <header>
+            <i class="fas fa-shield-alt logo-icon"></i>
+            <span class="logo-text">AetherLink</span>
+        </header>
+
+        <main>
+            <h1>Your Encrypted Communication Hub.</h1>
+            <p>Experience truly private, peer-to-peer messaging and calls. No servers, no tracking, just pure, end-to-end encrypted communication.</p>
+
+            <div class="cta-buttons">
+                <a href="https://y011b.github.io/prv/" class="button secondary">
+                    <i class="fas fa-globe"></i> Launch Web App
+                </a>
+                <a href="https://y011b.github.io/prv/app-release.apk" class="button primary" id="download-apk-btn">
+                    <i class="fab fa-android"></i> Download APK
+                </a>
+            </div>
+
+            <section id="offline-instructions" class="instructions-section">
+                <h2>How to Use AetherLink</h2>
+                <div class="instructions-grid">
+                    <div class="instruction-card">
+                        <h3><i class="fas fa-mobile-alt"></i> On Your Phone</h3>
+                        <p>Install the dedicated Android app for the best experience or add the web app to your home screen.</p>
+                        <ul>
+                            <li><strong>Best Experience:</strong> Download the official APK for full features.</li>
+                            <li><strong>Add to Home Screen:</strong> Open the web app, tap the browser menu (<i class="fas fa-ellipsis-v"></i>), and select "Install App" or "Add to Home Screen".</li>
+                        </ul>
+                        <div class="app-icon-preview">
+                            <img id="app-icon-img" src="https://i.imgur.com/n60IKUo.png" alt="AetherLink App Icon">
+                            <span class="app-name">AetherLink</span>
+                        </div>
+                    </div>
+
+                    <div class="instruction-card">
+                        <h3><i class="fas fa-desktop"></i> On Your Desktop</h3>
+                        <p>Use the powerful web app directly in your browser. For offline access, you can save the application page:</p>
+                        <ul>
+                            <li><strong>Launch Web App:</strong> The easiest way to start is by launching the web app.</li>
+                            <li><strong>Save for Offline:</strong> Press <kbd>Ctrl</kbd> + <kbd>S</kbd> (Windows/Linux) or <kbd>Cmd</kbd> + <kbd>S</kbd> (macOS) on the main app page.</li>
+                            <li><strong>Launch Offline:</strong> Open the saved HTML file from your computer anytime.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 AetherLink. All rights reserved.</p>
+            <button class="theme-toggle" id="theme-toggle-btn" title="Toggle Theme">
+                <i class="fas fa-sun"></i>
+            </button>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const downloadBtn = document.getElementById('download-apk-btn');
+            const themeToggleBtn = document.getElementById('theme-toggle-btn');
+            const appIconImg = document.getElementById('app-icon-img');
+            const body = document.body;
+
+            const icons = {
+                light: 'https://i.imgur.com/bpWnxnw.png',
+                dark: 'https://i.imgur.com/n60IKUo.png'
+            };
+            
+            const apkUrl = 'https://y011b.github.io/prv/app-release.apk';
+
+            // --- Download Handler ---
+            downloadBtn.addEventListener('click', function(e) {
+                e.preventDefault(); // Prevent default link behavior
+                
+                // Create a temporary link element to trigger the download
+                const link = document.createElement('a');
+                link.href = apkUrl;
+                link.setAttribute('download', 'AetherLink.apk'); // Sets the filename for the user
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            });
+
+            // --- Theme Toggle Handler ---
+            function applyTheme(theme) {
+                if (theme === 'dark') {
+                    body.classList.add('dark-theme');
+                    appIconImg.src = icons.dark;
+                    themeToggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+                } else {
+                    body.classList.remove('dark-theme');
+                    appIconImg.src = icons.light;
+                    themeToggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
+                }
+            }
+
+            themeToggleBtn.addEventListener('click', function() {
+                const isDark = body.classList.contains('dark-theme');
+                applyTheme(isDark ? 'light' : 'dark');
+            });
+            
+            // --- Initial Theme Check (Optional, in case you set a default) ---
+            // This ensures the correct icon is shown on page load based on the body's class
+            if (body.classList.contains('dark-theme')) {
+                applyTheme('dark');
+            } else {
+                applyTheme('light');
+            }
+        });
+    </script>
+</body>
+</html>
